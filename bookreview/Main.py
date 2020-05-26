@@ -22,9 +22,6 @@ class MainGUI:
         self.B5 = Button(self.window, text="주간 통계보기", width=10, height=1, font=self.TempFont)
         self.B5.place(x=530, y=180)
 
-
-
-
         self.Booksearch()
         self.Bookresult()
         self.Myrecord()
@@ -61,9 +58,6 @@ class MainGUI:
         self.canvas.pack()
         self.canvas.place(x=530, y=230)
         self.Font = font.Font(size=15, weight='bold', family='Consolas')
-
-
-
 
 MainGUI()
 
