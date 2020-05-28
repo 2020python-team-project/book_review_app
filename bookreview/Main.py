@@ -4,13 +4,14 @@ import tkinter.messagebox
 
 class MainGUI:
     def __init__(self):
-        self.window=Tk()
+        self.window = Tk()
+        self.window.title("♥ 나만의 독서기록장 ♥")
         self.window.geometry("1000x600+200+100")
-        self.TempFont=font.Font(size=16,weight='bold',family='Consolas')
+        self.TempFont = font.Font(size=16, weight='bold', family='Consolas')
         self.window.configure(bg="beige")
         self.InitTopText()
-        self.B1=Button(self.window,text="책 검색",width=8,height=1,font=self.TempFont)
-        self.B1.place(x=50,y=70)
+        self.B1 = Button(self.window, text="책 검색", width=8, height=1, font=self.TempFont)
+        self.B1.place(x=50, y=70)
         self.B2 = Button(self.window, text="도서관 찾기", width=10, height=1, font=self.TempFont)
         self.B2.place(x=200, y=70)
 
