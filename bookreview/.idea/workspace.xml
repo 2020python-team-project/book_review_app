@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4734a00-9c3a-4e25-9c59-8e974e1be5dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/book.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/book_search_engine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_searcher.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book.py" beforeDir="false" afterPath="$PROJECT_DIR$/book.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_search_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_search_engine.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +38,7 @@
       <recent name="C:\Users\hyelim\book_review_app\bookreview" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.book_search_engine (1)">
+  <component name="RunManager" selected="Python.Main">
     <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="bookreview" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -105,9 +104,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Main" />
         <item itemvalue="Python.book_search_engine (1)" />
         <item itemvalue="Python.book_search_engine" />
-        <item itemvalue="Python.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -125,25 +124,29 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="946" height="442" key="GridCell.Tab.0.bottom" timestamp="1590647778759">
+    <state width="799" height="247" key="GridCell.Tab.0.bottom" timestamp="1590818313469">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="946" height="442" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1590647778759" />
-    <state width="946" height="442" key="GridCell.Tab.0.center" timestamp="1590647778759">
+    <state width="799" height="247" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1590818313469" />
+    <state width="799" height="247" key="GridCell.Tab.0.center" timestamp="1590818313468">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="946" height="442" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1590647778759" />
-    <state width="946" height="442" key="GridCell.Tab.0.left" timestamp="1590647778759">
+    <state width="799" height="247" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1590818313468" />
+    <state width="799" height="247" key="GridCell.Tab.0.left" timestamp="1590818313468">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="946" height="442" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1590647778759" />
-    <state width="946" height="442" key="GridCell.Tab.0.right" timestamp="1590647778759">
+    <state width="799" height="247" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1590818313468" />
+    <state width="799" height="247" key="GridCell.Tab.0.right" timestamp="1590818313468">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="946" height="442" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1590647778759" />
+    <state width="799" height="247" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1590818313468" />
     <state x="277" y="75" key="SettingsEditor" timestamp="1590480928662">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="277" y="75" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1590480928662" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1590812241842">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1590812241842" />
   </component>
 </project>
