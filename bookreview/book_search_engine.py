@@ -165,7 +165,7 @@ class BookSearchEngine:
 if __name__ == "__main__":
     # test code
     search_engine = BookSearchEngine()
-    search_engine.set_search_word("잡화점")
+    search_engine.set_search_word("대화")
     search_engine.set_display_num()
     search_engine.set_start_num()
 
