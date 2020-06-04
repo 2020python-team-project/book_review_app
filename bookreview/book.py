@@ -1,14 +1,14 @@
+# 어차피 정보만 저장하는데 딕셔너리로 하는 게 이득인가...?
 class Book:
-    def __init__(self, title, link, image, author, price, discount, publisher, pubdate, isbn, description):
+    def __init__(self, title="", link="", image="", author="", price="",
+                 publisher="", pubdate="",  description=""):
         self.title = title
         self.link = link
         self.image = image
         self.author = author
         self.price = price
-        self.discount = discount
         self.publisher = publisher
         self.pubdate = pubdate
-        self.isbn = isbn
         self.description = description
 
     def print_info(self):
@@ -17,9 +17,7 @@ class Book:
         print(self.image)
         print(self.author)
         print(self.price)
-        print(self.discount)
         print(self.publisher)
         print(self.pubdate)
-        print(self.isbn)
         print(self.description)
         print("-" * 50)

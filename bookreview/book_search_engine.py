@@ -67,6 +67,7 @@ class BookSearchEngine:
 
     def request_search_result(self, option):
         self.set_search_params(option)
+        # 만약 네트워크가 연결되어 있지 않으면 아래의 문장에서 에러가 난다. 해결해야하나....ㅠ
         self.conn.request("GET", "/v1/search/book_adv.xml?" + self.params, None, self.headers)
         self.response = self.conn.getresponse()
 
@@ -74,22 +75,42 @@ class BookSearchEngine:
             # 가져온 xml 파일의 정보를 Book 객체에 담는다.
             # 검색어에 <b> 검색어 </b> 이거 있음 해결해라
             self.docm = minidom.parseString(self.response.read().decode("utf-8"))
-            titles = self.docm.getElementsByTagName("title")    # element 객체들의 리스트를 반환
-            link = self.docm.getElementsByTagName("link")
-            image = self.docm.getElementsByTagName("image")
-            author = self.docm.getElementsByTagName("author")
-            price = self.docm.getElementsByTagName("price")
-            discount = self.docm.getElementsByTagName("discount")       # 이 정보 필요해?
-            publisher = self.docm.getElementsByTagName("publisher")
-            pubdate = self.docm.getElementsByTagName("pubdate")
-            isbn = self.docm.getElementsByTagName("isbn")
-            description = self.docm.getElementsByTagName("description")
+            # print(self.docm.toprettyxml())
 
-            for i in range(self.display_num):
-                book = Book(titles[i].firstChild.data, link[i].firstChild.data, image[i].firstChild.data,
-                            author[i].firstChild.data, price[i].firstChild.data, discount[i].firstChild.data,
-                            publisher[i].firstChild.data, pubdate[i].firstChild.data, isbn[i].firstChild.data,
-                            description[i].firstChild.data)
+            total = self.docm.getElementsByTagName("total")     # NodeList
+            search_total = int(total[0].firstChild.data)
+            print(search_total)
+
+            items = self.docm.getElementsByTagName("item")
+
+            for node in items:
+                book_info = dict()      # { str: Text or None }
+                book_info["title"] = node.getElementsByTagName("title")[0].firstChild
+                book_info["link"] = node.getElementsByTagName("link")[0].firstChild
+                book_info["image"] = node.getElementsByTagName("image")[0].firstChild
+                book_info["author"] = node.getElementsByTagName("author")[0].firstChild
+                book_info["price"] = node.getElementsByTagName("price")[0].firstChild
+                book_info["publisher"] = node.getElementsByTagName("publisher")[0].firstChild
+                book_info["pubdate"] = node.getElementsByTagName("pubdate")[0].firstChild
+                book_info["description"] = node.getElementsByTagName("description")[0].firstChild
+
+                # Text 객체가 존재하는 지 검사
+                for key, value in book_info.items():
+                    if value is None:
+                        book_info[key] = ""
+                    else:
+                        book_info[key] = value.data
+
+                book = Book(
+                    title=book_info["title"],
+                    link=book_info["link"],
+                    image=book_info["image"],
+                    author=book_info["author"],
+                    price=book_info["price"],
+                    publisher=book_info["publisher"],
+                    pubdate=book_info["pubdate"],
+                    description=book_info["description"]
+                )
                 self.books.append(book)
 
             # 확인용 출력
@@ -100,6 +121,7 @@ class BookSearchEngine:
             print("HTTP Request is failed :" + self.response.reason)
             print(self.response.read().decode('utf-8'))
 
+    def release(self):
         self.conn.close()   # 언제 connection 닫아?
 
 
@@ -143,9 +165,9 @@ class BookSearchEngine:
 if __name__ == "__main__":
     # test code
     search_engine = BookSearchEngine()
-    search_engine.set_search_word("한강")
+    search_engine.set_search_word("잡화점")
     search_engine.set_display_num()
     search_engine.set_start_num()
 
-    search_engine.request_search_result("author")
+    search_engine.request_search_result("title")
 

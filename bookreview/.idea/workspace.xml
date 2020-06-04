@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f4734a00-9c3a-4e25-9c59-8e974e1be5dc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book.py" beforeDir="false" afterPath="$PROJECT_DIR$/book.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book_search_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_search_engine.py" afterDir="false" />
     </list>
@@ -60,6 +59,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="book" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="bookreview" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/book.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="book_search_engine (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="bookreview" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -105,6 +125,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.Main" />
+        <item itemvalue="Python.book" />
         <item itemvalue="Python.book_search_engine (1)" />
         <item itemvalue="Python.book_search_engine" />
       </list>
@@ -124,26 +145,26 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="799" height="247" key="GridCell.Tab.0.bottom" timestamp="1590818313469">
+    <state width="1515" height="278" key="GridCell.Tab.0.bottom" timestamp="1591248397917">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="799" height="247" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1590818313469" />
-    <state width="799" height="247" key="GridCell.Tab.0.center" timestamp="1590818313468">
+    <state width="1515" height="278" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1591248397917" />
+    <state width="1515" height="278" key="GridCell.Tab.0.center" timestamp="1591248397917">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="799" height="247" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1590818313468" />
-    <state width="799" height="247" key="GridCell.Tab.0.left" timestamp="1590818313468">
+    <state width="1515" height="278" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1591248397917" />
+    <state width="1515" height="278" key="GridCell.Tab.0.left" timestamp="1591248397917">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="799" height="247" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1590818313468" />
-    <state width="799" height="247" key="GridCell.Tab.0.right" timestamp="1590818313468">
+    <state width="1515" height="278" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1591248397917" />
+    <state width="1515" height="278" key="GridCell.Tab.0.right" timestamp="1591248397917">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="799" height="247" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1590818313468" />
-    <state x="277" y="75" key="SettingsEditor" timestamp="1590480928662">
+    <state width="1515" height="278" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1591248397917" />
+    <state x="364" y="126" width="981" height="707" key="SettingsEditor" timestamp="1590912087420">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="277" y="75" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1590480928662" />
+    <state x="364" y="126" width="981" height="707" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1590912087420" />
     <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1590812241842">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
