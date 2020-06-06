@@ -1,96 +1,139 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import font
 import tkinter.messagebox
-from book_search_engine import BookSearchEngine
+from bookSearchGUI import BookSearchGUI
+from LibrarySearchGUI import LibrarySearchGUI
+
 
 class MainGUI:
-    search_setting_frame = None
-    search_button = None
-    search_keyword_entry = None
+    window = None
+    TempFont = None
+    title_font = None
 
-    bsch_engine = None
+    # Main Frame
+    hud_frame = None
+    image_frame = None
+    book_frame = None
+    library_frame = None
+    left_frame = None
+
+    # HUD Frame Widget
+    title_label = None
+    search_book_button = None
+    search_library_button = None
+
+    # Image Frame Widget
+    book_image = None
+    image_label = None
+
+    # Book Search Frame Widget
+    book_search_gui = None
+
+    # Library Search Frame Widget
+    library_setting_frame = None
+    library_result_frame = None
+
+    # Left Frame Widget
 
     def __init__(self):
         self.window = Tk()
-        self.window.title("♥ 나만의 독서기록장 ♥")
-        self.window.geometry("1000x600+200+100")
-        self.TempFont = font.Font(size=16, weight='bold', family='Consolas')
-        self.window.configure(bg="beige")
-        self.InitTopText()
-        self.B1 = Button(self.window, text="책 검색", width=8, height=1, font=self.TempFont)
-        self.B1.place(x=50, y=70)
-        self.B2 = Button(self.window, text="도서관 찾기", width=10, height=1, font=self.TempFont)
-        self.B2.place(x=200, y=70)
 
-        self.B3 = Button(self.window, text="+", width=2, height=1, font=self.TempFont)
-        self.B3.place(x=880, y=180)
-        self.B4 = Button(self.window, text="-", width=2, height=1, font=self.TempFont)
-        self.B4.place(x=920, y=180)
+        self.set_font()
+        self.set_window()
+        self.build_main_frame()
 
-        self.B5 = Button(self.window, text="주간 통계보기", width=10, height=1, font=self.TempFont)
-        self.B5.place(x=530, y=180)
+        self.build_hud()
+        self.build_image()
 
-        self.set_search_widget()
-        self.Bookresult()
-        self.Myrecord()
+        self.build_book_search()
+        self.build_library_search()
+        self.build_left()
 
-        # data
-        self.bsch_engine = BookSearchEngine()
+        change_frame(self.book_frame)
 
         self.window.mainloop()
 
-    def InitTopText(self):
-        Font = font.Font(self.window, size=25, weight='bold', family='Consolas')
-        MainText = Label(self.window, font=Font, text="♥ 나만의 독서기록장 ♥")
-        MainText.pack()
-        MainText.place(x=60, y=10)
+    def set_window(self):
+        self.window.title("♥ 나만의 독서기록장 ♥")
+        self.window.geometry("1000x600+200+100")
+        self.window.resizable(False, False) #확대창 없애기
+        self.window.configure(bg="beige")
+        self.window.option_add("*TCombobox*Listbox.font", self.TempFont) #콤보박스에 폰트넣기
 
-    def set_search_widget(self):
-        # self.canvas = Canvas(self.window, bg="white", width=420, height=100)
-        # self.canvas.pack()
-        # self.canvas.place(x=30, y=120)
-        self.Font2 = font.Font(size=15, weight='bold', family='Consolas')
+    def set_font(self):
+        self.title_font = font.Font(size=24, weight="bold", family="Consolas")
+        self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
 
-        # Create Widget
-        self.search_setting_frame = Frame(self.window, bg="white", width=420, height=100)
-        self.search_button = Button(self.search_setting_frame, text="검색", command=self.search_books,
-                                    font=self.Font2)
+    def build_main_frame(self):
+        # Create
+        self.hud_frame = Frame(self.window, width=500, height=100, bg="beige")
+        self.image_frame = Frame(self.window, width=500, height=200, bg="beige")
+        self.book_frame = Frame(self.window, width=500, height=500, bg="beige")
+        self.library_frame = Frame(self.window, width=500, height=500, bg="beige")
+        self.left_frame = Frame(self.window, width=500, height=500, bg="beige")
 
-        # Place Widget
-        self.search_setting_frame.place(x=30, y=120)
-        self.search_button.place(x=350, y=10)
+        # Place
+        self.hud_frame.grid(row=0, column=0)
+        self.image_frame.grid(row=0, column=1)
+        self.book_frame.grid(row=1, column=0)
+        self.library_frame.grid(row=1, column=0)
+        self.left_frame.grid(row=1, column=1)
 
-        # test
-        Label(self.search_setting_frame, text="제목", font=self.Font2, bg="white").place(x=10, y=10)
-        self.search_keyword_entry = Entry(self.search_setting_frame, relief="solid", font=self.Font2)
-        self.search_keyword_entry.place(x=65, y=10)
-        # Label(text="저자", font=self.Font2).place(x=40, y=180)
-        # Entry().place(x=85, y=185)
-        # Label(text="출판사", font=self.Font2).place(x=230, y=130)
-        # Entry().place(x=295, y=135)
-        # Label(text="장르", font=self.Font2).place(x=230, y=180)
-        # Radiobutton(text="소설", value=1).place(x=295, y=185)
+        # debug 용
+        # self.hud_frame["bd"] = 1  #테두리 두께
+        # self.image_frame["bd"] = 1
+        # self.book_frame["bd"] = 1
+        # self.library_frame["bd"] = 1
+        # self.left_frame["bd"] = 1
+        # self.hud_frame["relief"] = "solid" #테두리모양
+        # self.image_frame["relief"] = "solid"
+        # self.book_frame["relief"] = "solid"
+        # self.library_frame["relief"] = "solid"
+        # self.left_frame["relief"] = "solid"
 
-    def Bookresult(self):
-        self.canvas = Canvas(self.window, bg="white", width=420, height=330)
-        self.canvas.pack()
-        self.canvas.place(x=30, y=230)
+    def build_image(self):
+        self.book_image = PhotoImage(file="Resource/Image/Book.png")
+        self.image_label = Label(self.image_frame, image=self.book_image,bg="beige")
+        self.image_label.pack()
+
+    def build_hud(self):
+        # Create
+        self.title_label = Label(self.hud_frame, font=self.title_font, text="♥ 나만의 독서기록장 ♥", bg="beige")
+        self.search_book_button = Button(self.hud_frame, text="책 검색", width=11, height=1, font=self.TempFont,
+                                         command=lambda: change_frame(self.book_frame))
+        self.search_library_button = Button(self.hud_frame, text="도서관 찾기", width=11, height=1, font=self.TempFont,
+                                            command=lambda: change_frame(self.library_frame))
+
+        # Place
+        self.title_label.place(x=250, y=10, anchor="n")     # x 중앙, y 상단이 기준
+        self.search_book_button.place(x=40, y=65)
+        self.search_library_button.place(x=175, y=65)
+
+    def build_book_search(self):
+        self.book_search_gui = BookSearchGUI(self.book_frame)
+
+    def build_library_search(self):
+        self.library_search_gui = LibrarySearchGUI(self.library_frame)
+
+    def build_left(self):
+        self.canvas = Canvas(self.left_frame, bg="white", width=420, height=330)
+        self.canvas.place(x=30, y=130)
         self.Font = font.Font(size=15, weight='bold', family='Consolas')
 
-    def Myrecord(self):
-        self.canvas = Canvas(self.window, bg="white", width=420, height=330)
-        self.canvas.pack()
-        self.canvas.place(x=530, y=230)
-        self.Font = font.Font(size=15, weight='bold', family='Consolas')
+        self.B3 = Button(self.left_frame, text="+", width=2, height=1, font=self.TempFont)
+        self.B3.place(x=380, y=80)
+        self.B4 = Button(self.left_frame, text="-", width=2, height=1, font=self.TempFont)
+        self.B4.place(x=420, y=80)
+
+        self.B5 = Button(self.left_frame, text="주간 통계보기", width=10, height=1, font=self.TempFont)
+        self.B5.place(x=30, y=80)
 
 
-    def search_books(self):
-        self.bsch_engine.set_search_word(self.search_keyword_entry.get())
-        self.bsch_engine.set_display_num()
-        self.bsch_engine.set_start_num()
-        self.bsch_engine.set_category()
 
-        self.bsch_engine.request_search_result("title")
+
+def change_frame(frame):
+    frame.tkraise()
 
 MainGUI()
 

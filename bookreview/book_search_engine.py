@@ -3,7 +3,7 @@ import http.client
 from urllib import parse
 from book import Book
 from xml.dom import minidom
-from xml.
+
 
 # urllib
 # url과 관련된 패키지. url 파싱부터 url에 할당된 데이터를 수집하는 등 다양한 기능 제공
@@ -14,9 +14,19 @@ from xml.
 
 
 option_to_varname = {
-    "title": "d_titl=",
-    "author": "d_auth=",
-    "publisher": "d_publ="
+    "제목": "d_titl=",
+    "저자": "d_auth=",
+    "출판사": "d_publ="
+}
+
+catg_to_num = {
+    "전체": "",
+    "소설": "100",
+    "시/에세이": "110",
+    "인문": "120",
+    "자기계발": "170",
+    "역사/문화": "190",
+    "해외도서": "340"
 }
 
 
@@ -31,17 +41,17 @@ class BookSearchEngine:
     search_word = ""
     display_num = int()
     start_num = int()
-    category = ""   # 카테고리 번호가 들어간 string
+    catg_num = ""   # 카테고리 번호가 들어간 string
 
     params = ""
 
     response = None
     docm = ""
 
+    search_total = int()
     books = []      # 받아온 책의 정보를 담은 Book 객체를 저장하는 리스트
 
     def __init__(self):
-        self.conn = http.client.HTTPSConnection("openapi.naver.com")
 
         self.headers = {
             "X-Naver-Client-Id": self.client_id,
@@ -51,123 +61,88 @@ class BookSearchEngine:
     def set_search_word(self, word):
         self.search_word = parse.quote(word)    # encoding 된 텍스트
 
-    def set_category(self, value=""):
-        self.category = value
+    def set_category(self, catg=""):
+        self.catg_num = catg_to_num[catg]
 
-    def set_display_num(self, num=10):
+    def set_display_num(self, num=30):
         self.display_num = num
 
     def set_start_num(self, num=1):
         self.start_num = num
 
-    def set_search_params(self, option):
+    def _set_search_params(self, option):
         self.params = option_to_varname[option] + self.search_word \
                       + "&display=" + str(self.display_num) + "&start=" + str(self.start_num) \
-                      + "&d_catg=" + self.category
+                      + "&d_catg=" + self.catg_num
+
+    def get_book_info(self):        # 가져온 xml 파일의 정보를 Book 객체에 담는다.
+        self.docm = minidom.parseString(self.response.read().decode("utf-8"))
+
+        # 검색 결과 수 가져오기
+        total = self.docm.getElementsByTagName("total")  # NodeList
+        self.search_total = int(total[0].firstChild.data)
+
+        items = self.docm.getElementsByTagName("item")
+        book_info = dict()  # { str: Text or None }
+        for node in items:
+            book_info["title"] = node.getElementsByTagName("title")[0].firstChild
+            book_info["link"] = node.getElementsByTagName("link")[0].firstChild
+            book_info["image"] = node.getElementsByTagName("image")[0].firstChild
+            book_info["author"] = node.getElementsByTagName("author")[0].firstChild
+            book_info["price"] = node.getElementsByTagName("price")[0].firstChild
+            book_info["publisher"] = node.getElementsByTagName("publisher")[0].firstChild
+            book_info["pubdate"] = node.getElementsByTagName("pubdate")[0].firstChild
+            book_info["description"] = node.getElementsByTagName("description")[0].firstChild
+
+            # Text 객체가 존재하는 지 검사
+            for key, value in book_info.items():
+                if value is None:
+                    book_info[key] = ""
+                else:
+                    book_info[key] = value.data
+
+            book = Book(
+                title=book_info["title"].replace("<b>", "").replace("</b>", ""),
+                link=book_info["link"],
+                image=book_info["image"],
+                author=book_info["author"].replace("<b>", "").replace("</b>", ""),
+                price=book_info["price"],
+                publisher=book_info["publisher"].replace("<b>", "").replace("</b>", ""),
+                pubdate=book_info["pubdate"],
+                description=book_info["description"].replace("<b>", "").replace("</b>", "")
+            )
+            self.books.append(book)
+
+        # 확인용 출력
+        for book in self.books:
+            book.print_info()
 
     def request_search_result(self, option):
-        self.set_search_params(option)
-        # 만약 네트워크가 연결되어 있지 않으면 아래의 문장에서 에러가 난다. 해결해야하나....ㅠ
+        self.books.clear()  # 객체까지 모두 삭제되니?
+        self.conn = http.client.HTTPSConnection("openapi.naver.com")
+        self._set_search_params(option)
+        # 만약 네트워크가 연결되어 있지 않으면 에러 남. 해결해야하나....ㅠ
         self.conn.request("GET", "/v1/search/book_adv.xml?" + self.params, None, self.headers)
         self.response = self.conn.getresponse()
 
         if int(self.response.status) == 200:
-            # 가져온 xml 파일의 정보를 Book 객체에 담는다.
-            # 검색어에 <b> 검색어 </b> 이거 있음 해결해라
-            self.docm = minidom.parseString(self.response.read().decode("utf-8"))
-            # print(self.docm.toprettyxml())
-
-            total = self.docm.getElementsByTagName("total")     # NodeList
-            search_total = int(total[0].firstChild.data)
-            print(search_total)
-
-            items = self.docm.getElementsByTagName("item")
-
-            for node in items:
-                book_info = dict()      # { str: Text or None }
-                book_info["title"] = node.getElementsByTagName("title")[0].firstChild
-                book_info["link"] = node.getElementsByTagName("link")[0].firstChild
-                book_info["image"] = node.getElementsByTagName("image")[0].firstChild
-                book_info["author"] = node.getElementsByTagName("author")[0].firstChild
-                book_info["price"] = node.getElementsByTagName("price")[0].firstChild
-                book_info["publisher"] = node.getElementsByTagName("publisher")[0].firstChild
-                book_info["pubdate"] = node.getElementsByTagName("pubdate")[0].firstChild
-                book_info["description"] = node.getElementsByTagName("description")[0].firstChild
-
-                # Text 객체가 존재하는 지 검사
-                for key, value in book_info.items():
-                    if value is None:
-                        book_info[key] = ""
-                    else:
-                        book_info[key] = value.data
-
-                book = Book(
-                    title=book_info["title"],
-                    link=book_info["link"],
-                    image=book_info["image"],
-                    author=book_info["author"],
-                    price=book_info["price"],
-                    publisher=book_info["publisher"],
-                    pubdate=book_info["pubdate"],
-                    description=book_info["description"]
-                )
-                self.books.append(book)
-
-            # 확인용 출력
-            for book in self.books:
-                book.print_info()
-
+            self.get_book_info()
         else:
             print("HTTP Request is failed :" + self.response.reason)
             print(self.response.read().decode('utf-8'))
 
-    def release(self):
-        self.conn.close()   # 언제 connection 닫아?
+        self.conn.close()
 
+    def get_total(self):
+        return self.search_total
 
-# 응답 예시
-# < HTTP/1.1 200 OK
-# < Server: nginx
-# < Date: Mon, 26 Sep 2016 01:40:35 GMT
-# < Content-Type: text/xml;charset=utf-8
-# < Transfer-Encoding: chunked
-# < Connection: keep-alive
-# < Keep-Alive: timeout=5
-# < Vary: Accept-Encoding
-# < X-Powered-By: Naver
-# < Cache-Control: no-cache, no-store, must-revalidate
-# < Pragma: no-cache
-# <
-# <?xml version="1.0" encoding="UTF-8"?>
-# <rss version="2.0">
-#     <channel>
-#         <title>Naver Open API - book ::'주식'</title>
-#         <link>http://search.naver.com</link>
-#         <description>Naver Search Result</description>
-#         <lastBuildDate>Mon, 26 Sep 2016 10:40:35 +0900</lastBuildDate>
-#         <total>20177</total><start>1</start><display>10</display>
-#         <item>
-#             <title>불곰의 <b>주식</b>투자 불패공식 (60개 매도종목 평균 수익률 62%)</title>
-#             <link>http://openapi.naver.com/l?AAAC3LSwqDMBSF4dXcDCV6YxsHGfiog6JIV1A0SYloGpumQnffFIQz+DnwvT7afwVcaigRqvofvIKiIcbrhzAhbIAlZG3c5NySPMdd+0Q6exxqOuKudBjnNdlMFO00K8AmpRzZKackiJSdGc8ZxZzSglix3vqhG6KVKPcis0vXX+k+vqXM2BLpDzHjEYWYAAAA</link>
-#             <image>http://bookthumb.phinf.naver.net/cover/108/346/10834650.jpg?type=m1&udate=20160902</image>
-#             <author>불곰 박선목</author>
-#             <price>16000</price>
-#             <discount>14400</discount>
-#             <publisher>부키</publisher>
-#             <pubdate>20160729</pubdate>
-#             <isbn>8960515523 9788960515529</isbn>
-#             <description>잘못된 <b>주식</b>투자 습관을 버리고, 절대로 지지 않는 투자법을 체득하다!불곰<b>주식</b>연구소 대표 ‘불곰’이 알려 주는 세상에서 가장 쉬운 ‘<b>주식</b>투자 불패공식’ 『불곰의 <b>주식</b>투자 불패공식』. 불곰은 전업투자자가 아니다. 불곰<b>주식</b>연구소는 태평스럽게도 한 달에 한 종목 정도만 추천할 따름이다. 그럼에도... </description></item><item><title>엄마, <b>주식</b> 사주세요 (아이와 엄마의 미래를 위한 투자 원칙)</title><link>http://openapi.naver.com/l?AAACssTS2qtFV1dVZ1NFZ1cgYxLJxULV3UMopS02wzSkoKVI0dVY3cgCgpPz9bLy+xLLVILzk/FyqQkgRlxKekliRm5ugVZAB1uCVlpqgauxgamJsZmZlZqpXYGpqYm1iYmhgYmxoYWKrl2oaYpnokpmR6mhX6G1mkhHsDzXOqAGJDU8+M8rRIoGYA29JYJ5oAAAA=</link><image>http://bookthumb.phinf.naver.net/cover/107/626/10762669.jpg?type=m1&udate=20160802</image><author>존 리</author><price>14000</price><discount>12600</discount><publisher>한국경제신문사</publisher><pubdate>20160627</pubdate><isbn>8947541184 9788947541183</isbn><description>엄마의 <b>주식</b> 투자가 아이의 미래다!『엄마, <b>주식</b> 사주세요』는 전설의 펀드 투자자, 코리아펀드의 귀재로 불리며 새로운 마켓 리더로 부상한 존 리가... 저자는 이 책을 통해 자녀를 월급쟁이가 아닌 자본가로 키울 것과, <b>주식</b>투자에 대한 엄마들의 편견에 대해 중점적으로 이야기한다. 부를 축적하기 위한 자본가... </description>
-#         </item>
-#         ...
-#     </channel>
-# </rss>
 
 if __name__ == "__main__":
     # test code
     search_engine = BookSearchEngine()
-    search_engine.set_search_word("잡화점")
+    search_engine.set_search_word("대화")
     search_engine.set_display_num()
     search_engine.set_start_num()
 
-    search_engine.request_search_result("title")
+    search_engine.request_search_result("제목")
 
