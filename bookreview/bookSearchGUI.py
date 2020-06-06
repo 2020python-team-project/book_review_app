@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
+from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
 
 
@@ -21,6 +22,15 @@ class BookSearchGUI:
     result_scrollbar = None
 
     # detail frame
+    image_label = None
+    url_image = None
+    title_label = None
+    author_label = None
+    publisher_label = None
+    pubdate_label = None
+    price_label = None
+    description_label = None
+    link_label = None
     back_to_list_button = None
     save_button = None
 
@@ -36,6 +46,8 @@ class BookSearchGUI:
 
     def __init__(self, frame):
         self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
+        self.detail_font = font.Font(size=10, family='Consolas')
+
         self.create_widget(frame)
         self.place_widget()
 
@@ -66,8 +78,18 @@ class BookSearchGUI:
                                       selectmode="single", yscrollcommand=self.result_scrollbar.set)
         self.result_listbox.bind("<Double-Button-1>", self.show_detail)
 
-        self.back_to_list_button = Button(self.detail_frame, font=self.TempFont, text="목록으로",
+        self.image_label = Label(self.detail_frame)
+        self.title_label = Label(self.detail_frame, font=self.detail_font, text="제목")
+        self.author_label = Label(self.detail_frame, font=self.detail_font, text="저자")
+        self.publisher_label = Label(self.detail_frame, font=self.detail_font, text="출판사")
+        self.pubdate_label = Label(self.detail_frame, font=self.detail_font, text="출판일")
+        self.price_label = Label(self.detail_frame, font=self.detail_font, text="가격")
+        self.description_label = Label(self.detail_frame, font=self.detail_font, text="설명")
+        self.link_label = Label(self.detail_frame, font=self.detail_font, text="링크")
+        self.back_to_list_button = Button(self.detail_frame, font=self.detail_font, text="목록으로",
                                           command=self.result_frame.tkraise)
+        self.save_button = Button(self. detail_frame, font=self.detail_font, text="저장하기",
+                                  command=self.open_save_frame)
 
     def place_widget(self):
         # Place Widget
@@ -84,7 +106,17 @@ class BookSearchGUI:
         self.result_listbox.pack(side="left")
         self.result_scrollbar.pack(side="right", fill='y')
 
+        self.image_label.pack()
+        self.image_label.place(x=10, y=10)
+        self.title_label.place(x=150, y=10)
+        self.author_label.place(x=150, y=40)
+        self.publisher_label.place(x=150, y=70)
+        self.pubdate_label.place(x=150, y=100)
+        self.price_label.place(x=150, y=130)
+        self.description_label.place(x=10, y=160)
+        self.link_label.place(x=10, y=240)
         self.back_to_list_button.place(x=10, y=300, anchor="w")
+        self.save_button.place(x=320, y=300, anchor="w")
 
     def search_books(self, event=None):
         # 스크롤을 아래로 계속 내리면 검색 결과를 더 불러오는 기능 구현해야 함..
@@ -104,6 +136,23 @@ class BookSearchGUI:
             self.result_listbox.insert(i, book.title)
 
     def show_detail(self, event):
-        if self.result_listbox.curselection() == ():
+        selected_index = self.result_listbox.curselection()
+        if selected_index == ():
             return
+        selected_book = self.bsch_engine.books[selected_index[0]]
+
+        self.url_image = UrlImage(selected_book.image)
+
+        self.image_label["image"] = self.url_image.get_image()
+        self.title_label["text"] = "제목: " + selected_book.title
+        self.author_label["text"] = "저자: " + selected_book.author
+        self.publisher_label["text"] = "출판사: " + selected_book.publisher
+        self.pubdate_label["text"] = "출판일: " + selected_book.pubdate
+        self.price_label["text"] = "가격: " + selected_book.price
+        self.description_label["text"] = "설명: " + selected_book.description
+        self.link_label["text"] = "링크: " + selected_book.link
+
         self.detail_frame.tkraise()
+
+    def open_save_frame(self):
+        pass
