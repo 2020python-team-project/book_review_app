@@ -12,7 +12,6 @@ from xml.dom import minidom
 # 문서 객체 모델(Document Object Model)
 # XML이나 HTML 문서에 접근하기 위한 표준임
 
-
 option_to_varname = {
     "제목": "d_titl=",
     "저자": "d_auth=",
@@ -81,7 +80,6 @@ class BookSearchEngine:
         # 검색 결과 수 가져오기
         total = self.docm.getElementsByTagName("total")  # NodeList
         self.search_total = int(total[0].firstChild.data)
-
         items = self.docm.getElementsByTagName("item")
         book_info = dict()  # { str: Text or None }
         for node in items:
@@ -114,8 +112,8 @@ class BookSearchEngine:
             self.books.append(book)
 
         # 확인용 출력
-        for book in self.books:
-            book.print_info()
+        # for book in self.books:
+        #     book.print_info()
 
     def request_search_result(self, option):
         self.books.clear()  # 객체까지 모두 삭제되니?

@@ -76,7 +76,7 @@ class BookSearchGUI:
         self.result_scrollbar = Scrollbar(self.result_frame)
         self.result_listbox = Listbox(self.result_frame, font=self.TempFont, width=40, height=14, activestyle="none",
                                       selectmode="single", yscrollcommand=self.result_scrollbar.set)
-        self.result_listbox.bind("<Double-Button-1>", self.show_detail)
+        self.result_listbox.bind("<Double-Button-1>", self.show_detail) #더블클릭하면 변환
 
         self.image_label = Label(self.detail_frame)
         self.title_label = Label(self.detail_frame, font=self.detail_font, text="제목")

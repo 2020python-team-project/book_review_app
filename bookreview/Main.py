@@ -95,7 +95,19 @@ class MainGUI:
     def build_image(self):
         self.book_image = PhotoImage(file="Resource/Image/Book.png")
         self.image_label = Label(self.image_frame, image=self.book_image,bg="beige")
-        self.image_label.pack()
+        self.image_label.grid(row=0,column=0)
+        self.book2_image = PhotoImage(file="Resource/Image/Book2.png")
+        self.image_label = Label(self.image_frame, image=self.book2_image, bg="beige")
+        self.image_label.grid(row=0, column=1)
+        self.book3_image = PhotoImage(file="Resource/Image/Book3.png")
+        self.image_label = Label(self.image_frame, image=self.book3_image, bg="beige")
+        self.image_label.grid(row=0, column=2)
+        self.book4_image = PhotoImage(file="Resource/Image/Book4.png")
+        self.image_label = Label(self.image_frame, image=self.book4_image, bg="beige")
+        self.image_label.grid(row=0, column=3)
+        self.book5_image = PhotoImage(file="Resource/Image/Book5.png")
+        self.image_label = Label(self.image_frame, image=self.book5_image, bg="beige")
+        self.image_label.grid(row=0, column=4)
 
     def build_hud(self):
         # Create
