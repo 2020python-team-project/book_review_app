@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import font
-from tkinter import ttk
 from Library_search_engin import LibrarySearchEngine
 
 class LibrarySearchGUI:

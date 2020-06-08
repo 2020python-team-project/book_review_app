@@ -29,6 +29,8 @@ class MainGUI:
 
     # Book Search Frame Widget
     book_search_gui = None
+    library_search_gui=None
+    record_book_gui=None
 
     # Library Search Frame Widget
     library_setting_frame = None
@@ -130,6 +132,8 @@ class MainGUI:
 
     def build_left(self):
         self.record_book_gui= RecordBookGUI(self.left_frame)
+
+
 
 def change_frame(frame):
     frame.tkraise()

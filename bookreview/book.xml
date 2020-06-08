@@ -1,18 +1,18 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <booklist cnt="3">
  <book ISBN="0399250395">
        <title>hungry bear</title>
-       <author name="Eric Carle"/>
- <author name="Keith Finch"/>
+       <author> Eric Carle</author>
  <publisher> Philomel Books</publisher>
  <description> Celebrating the 40th anniverary of one of the most popular children's books ever created</description>
  </book>
  <book ISBN="0964729237">
     <title lang="english">The Shack</title>
+    <author>Keith Finch</author>
  </book>
  <book ISBN="0553281097">
     <title>You Can Negotiate Anything</title>
-    <author name="Herb Cohen"/>
+     <author>Herb Cohen</author>
     <category cid="12">Negotiate and narrative skill</category>
  </book>
 </booklist>

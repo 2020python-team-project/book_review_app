@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import font
 from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
+from Record_search_engine import RecordSearchEngine
 
 
 class BookSearchGUI:
@@ -43,6 +44,9 @@ class BookSearchGUI:
 
     # data
     bsch_engine = None
+    RB_engine = None
+
+
 
     def __init__(self, frame):
         self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
@@ -53,6 +57,8 @@ class BookSearchGUI:
 
         # data
         self.bsch_engine = BookSearchEngine()
+        self.RB_engine = RecordSearchEngine()
+
 
     def create_widget(self, frame):
         self.setting_frame = Frame(frame, bg="white", width=420, height=100)
@@ -139,20 +145,50 @@ class BookSearchGUI:
         selected_index = self.result_listbox.curselection()
         if selected_index == ():
             return
-        selected_book = self.bsch_engine.books[selected_index[0]]
+        self.selected_book = self.bsch_engine.books[selected_index[0]]
 
-        self.url_image = UrlImage(selected_book.image)
+        self.url_image = UrlImage(self.selected_book.image)
 
         self.image_label["image"] = self.url_image.get_image()
-        self.title_label["text"] = "제목: " + selected_book.title
-        self.author_label["text"] = "저자: " + selected_book.author
-        self.publisher_label["text"] = "출판사: " + selected_book.publisher
-        self.pubdate_label["text"] = "출판일: " + selected_book.pubdate
-        self.price_label["text"] = "가격: " + selected_book.price
-        self.description_label["text"] = "설명: " + selected_book.description
-        self.link_label["text"] = "링크: " + selected_book.link
+        self.title_label["text"] = "제목: " + self.selected_book.title
+        self.author_label["text"] = "저자: " + self.selected_book.author
+        self.publisher_label["text"] = "출판사: " + self.selected_book.publisher
+        self.pubdate_label["text"] = "출판일: " + self.selected_book.pubdate
+        self.price_label["text"] = "가격: " + self.selected_book.price
+        self.description_label["text"] = "설명: " + self.selected_book.description
+        self.link_label["text"] = "링크: " + self.selected_book.link
 
         self.detail_frame.tkraise()
 
     def open_save_frame(self):
-        print("저장")
+        # 엘리먼트를 만듭니다.
+        newBook = self.RB_engine.BooksDoc.createElement('book')
+        titleEle = self.RB_engine.BooksDoc.createElement('title')
+        titleNode = self.RB_engine.BooksDoc.createTextNode(self.selected_book.title)
+
+        # 텍스트 노드와 Title 엘리먼트를 연결 시킵니다.
+        try:
+            titleEle.appendChild(titleNode)
+        except Exception:
+            print("append child fail- please,check the parent element & node!!!")
+            return None
+        else:
+            titleEle.appendChild(titleNode)
+
+        # Title을 book 엘리먼트와 연결 시킵니다.
+        try:
+            newBook.appendChild(titleEle)
+            booklist = self.RB_engine.BooksDoc.firstChild
+        except Exception:
+            print("append child fail- please,check the parent element & node!!!")
+            return None
+        else:
+            if booklist != None:
+                booklist.appendChild(newBook)
+                print(booklist.toprettyxml())
+                #앨리먼트와 텍스트 추가는 했고.. record 창 갱신은 어떻게?
+
+
+
+
+

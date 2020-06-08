@@ -82,6 +82,7 @@ class BookSearchEngine:
         self.search_total = int(total[0].firstChild.data)
         items = self.docm.getElementsByTagName("item")
         book_info = dict()  # { str: Text or None }
+        print(items)
         for node in items:
             book_info["title"] = node.getElementsByTagName("title")[0].firstChild
             book_info["link"] = node.getElementsByTagName("link")[0].firstChild

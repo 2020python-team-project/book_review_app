@@ -4,10 +4,7 @@ from urllib import parse
 from xml.dom.minidom import *
 import urllib.request
 from Library import Library
-from xml.etree import ElementTree
-import base64
-from tkinter import *
-import smtplib
+
 
 
 class LibrarySearchEngine:
@@ -55,7 +52,6 @@ class LibrarySearchEngine:
             library_info["REFINE_ROADNM_ADDR"] = node.getElementsByTagName("REFINE_ROADNM_ADDR")[0].firstChild
             library_info["READROOM_OPEN_TM_INFO"] = node.getElementsByTagName("READROOM_OPEN_TM_INFO")[0].firstChild
             library_info["READROOM_REST_DE_INFO"] = node.getElementsByTagName("READROOM_REST_DE_INFO")[0].firstChild
-
             for key, value in library_info.items():
                 if value is None:
                     library_info[key] = ""
