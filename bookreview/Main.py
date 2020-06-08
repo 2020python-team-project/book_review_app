@@ -4,7 +4,7 @@ from tkinter import font
 import tkinter.messagebox
 from bookSearchGUI import BookSearchGUI
 from LibrarySearchGUI import LibrarySearchGUI
-
+from RecordBookGUI import RecordBookGUI
 
 class MainGUI:
     window = None
@@ -129,20 +129,7 @@ class MainGUI:
         self.library_search_gui = LibrarySearchGUI(self.library_frame)
 
     def build_left(self):
-        self.canvas = Canvas(self.left_frame, bg="white", width=420, height=330)
-        self.canvas.place(x=30, y=130)
-        self.Font = font.Font(size=15, weight='bold', family='Consolas')
-
-        self.B3 = Button(self.left_frame, text="+", width=2, height=1, font=self.TempFont)
-        self.B3.place(x=380, y=80)
-        self.B4 = Button(self.left_frame, text="-", width=2, height=1, font=self.TempFont)
-        self.B4.place(x=420, y=80)
-
-        self.B5 = Button(self.left_frame, text="주간 통계보기", width=10, height=1, font=self.TempFont)
-        self.B5.place(x=30, y=80)
-
-
-
+        self.record_book_gui= RecordBookGUI(self.left_frame)
 
 def change_frame(frame):
     frame.tkraise()

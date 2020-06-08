@@ -41,6 +41,7 @@ class LibrarySearchEngine:
             print(parseString(e.read().decode('utf-8')).toprettyxml())
         else:
             self.docm= parseString(self.resp.read().decode('utf-8'))
+            #print("&"*50+self.docm.toprettyxml())
             #toprettyxml는 xml 형식으로 바꿔주는 함수
 
         row = self.docm.getElementsByTagName("row")
@@ -72,10 +73,8 @@ class LibrarySearchEngine:
             )
             self.library_list.append(library)
 
-            for i in self.library_list:
-                i.print_info()
-
-
+            # for i in self.library_list:
+            #     i.print_info()
 
     def urlencode(self,string):
         # URL 인코딩
