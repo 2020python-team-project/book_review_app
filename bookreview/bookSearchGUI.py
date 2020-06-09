@@ -118,11 +118,11 @@ class BookSearchGUI:
 
         self.image_label.pack()
         self.image_label.place(x=10, y=10)
-        self.title_label.place(x=150, y=10)
-        self.author_label.place(x=150, y=40)
-        self.publisher_label.place(x=150, y=70)
-        self.pubdate_label.place(x=150, y=100)
-        self.price_label.place(x=150, y=130)
+        self.title_label.place(x=120, y=10)
+        self.author_label.place(x=120, y=40)
+        self.publisher_label.place(x=120, y=70)
+        self.pubdate_label.place(x=120, y=100)
+        self.price_label.place(x=120, y=130)
         self.description_text.place(x=10, y=160)
         self.link_label.place(x=10, y=250)
         self.back_to_list_button.place(x=10, y=300, anchor="w")
@@ -161,8 +161,10 @@ class BookSearchGUI:
         self.publisher_label["text"] = "출판사: " + self.selected_book.publisher
         self.pubdate_label["text"] = "출판일: " + self.selected_book.pubdate
         self.price_label["text"] = "가격: " + self.selected_book.price
+
         self.description_text.delete(1.0, END)      # 처음부터 끝까지 텍스트 창에 있는 내용을 비운다
         self.description_text.insert(1.0, self.selected_book.description)
+        # self.description_text["state"] = "disable"
         self.link_label["text"] = "링크: " + self.selected_book.link
 
         self.detail_frame.tkraise()

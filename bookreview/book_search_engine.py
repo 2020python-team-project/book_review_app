@@ -108,7 +108,7 @@ class BookSearchEngine:
                 price=book_info["price"],
                 publisher=book_info["publisher"].replace("<b>", "").replace("</b>", ""),
                 pubdate=book_info["pubdate"],
-                description=book_info["description"].replace("<b>", "").replace("</b>", "")
+                description=book_info["description"].replace("<b>", "").replace("</b>", "") .replace("&#x0D;", "")
             )
             self.books.append(book)
 

@@ -52,7 +52,7 @@ class LibrarySearchGUI:
         self.dongkeyword_entry.bind("<Return>", self.search_library)
 
         self.first_label=Label(self.setting_frame,font=self.TempFont,bg="white",text="시/도 명:")
-        self.second_label = Label(self.setting_frame, font=self.TempFont, bg="white", text="시/군/구 명 :")
+        self.second_label = Label(self.setting_frame, font=self.TempFont, bg="white", text="읍/면/동 명 :")
 
         #result
         self.result_scrollbar = Scrollbar(self.result_frame)
