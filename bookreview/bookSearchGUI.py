@@ -30,7 +30,7 @@ class BookSearchGUI:
     publisher_label = None
     pubdate_label = None
     price_label = None
-    description_label = None
+    description_text = None
     link_label = None
     back_to_list_button = None
     save_button = None
@@ -42,11 +42,13 @@ class BookSearchGUI:
     display_num = int()
     start_num = int()
 
+    edit_gui = None
+
     # data
     bsch_engine = None
     RB_engine = None
 
-
+    selected_book = None
 
     def __init__(self, frame):
         self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
@@ -58,7 +60,6 @@ class BookSearchGUI:
         # data
         self.bsch_engine = BookSearchEngine()
         self.RB_engine = RecordSearchEngine()
-
 
     def create_widget(self, frame):
         self.setting_frame = Frame(frame, bg="white", width=420, height=100)
@@ -79,23 +80,26 @@ class BookSearchGUI:
         self.head_combobox.set(self.heads[0])
         self.book_catg_combobox.set(self.categories[0])
 
-        self.result_scrollbar = Scrollbar(self.result_frame)
         self.result_listbox = Listbox(self.result_frame, font=self.TempFont, width=40, height=14, activestyle="none",
-                                      selectmode="single", yscrollcommand=self.result_scrollbar.set)
+                                      selectmode="single")
         self.result_listbox.bind("<Double-Button-1>", self.show_detail) #더블클릭하면 변환
+        self.result_scrollbar = Scrollbar(self.result_frame)
+
+        self.result_listbox["yscrollcommand"] = self.result_scrollbar.set
+        self.result_scrollbar["command"] = self.result_listbox.yview
 
         self.image_label = Label(self.detail_frame)
-        self.title_label = Label(self.detail_frame, font=self.detail_font, text="제목",bg='white')
-        self.author_label = Label(self.detail_frame, font=self.detail_font, text="저자",bg='white')
-        self.publisher_label = Label(self.detail_frame, font=self.detail_font, text="출판사",bg='white')
-        self.pubdate_label = Label(self.detail_frame, font=self.detail_font, text="출판일",bg='white')
-        self.price_label = Label(self.detail_frame, font=self.detail_font, text="가격",bg='white')
-        self.description_label = Label(self.detail_frame, font=self.detail_font, text="설명",bg='white')
-        self.link_label = Label(self.detail_frame, font=self.detail_font, text="링크",bg='white')
+        self.title_label = Label(self.detail_frame, font=self.detail_font, text="제목", bg='white')
+        self.author_label = Label(self.detail_frame, font=self.detail_font, text="저자", bg='white')
+        self.publisher_label = Label(self.detail_frame, font=self.detail_font, text="출판사", bg='white')
+        self.pubdate_label = Label(self.detail_frame, font=self.detail_font, text="출판일", bg='white')
+        self.price_label = Label(self.detail_frame, font=self.detail_font, text="가격", bg='white')
+        self.description_text = Text(self.detail_frame, font=self.detail_font, bg='white', width=55, height=6)
+        self.link_label = Label(self.detail_frame, font=self.detail_font, text="링크", bg='white')
         self.back_to_list_button = Button(self.detail_frame, font=self.detail_font, text="목록으로",
                                           command=self.result_frame.tkraise)
         self.save_button = Button(self. detail_frame, font=self.detail_font, text="저장하기",
-                                  command=self.open_save_frame)
+                                  command=self.open_edit_frame)
 
     def place_widget(self):
         # Place Widget
@@ -119,8 +123,8 @@ class BookSearchGUI:
         self.publisher_label.place(x=150, y=70)
         self.pubdate_label.place(x=150, y=100)
         self.price_label.place(x=150, y=130)
-        self.description_label.place(x=10, y=160)
-        self.link_label.place(x=10, y=240)
+        self.description_text.place(x=10, y=160)
+        self.link_label.place(x=10, y=250)
         self.back_to_list_button.place(x=10, y=300, anchor="w")
         self.save_button.place(x=320, y=300, anchor="w")
 
@@ -147,6 +151,8 @@ class BookSearchGUI:
             return
         self.selected_book = self.bsch_engine.books[selected_index[0]]
 
+        self.selected_book.print_info()
+
         self.url_image = UrlImage(self.selected_book.image)
 
         self.image_label["image"] = self.url_image.get_image()
@@ -155,12 +161,20 @@ class BookSearchGUI:
         self.publisher_label["text"] = "출판사: " + self.selected_book.publisher
         self.pubdate_label["text"] = "출판일: " + self.selected_book.pubdate
         self.price_label["text"] = "가격: " + self.selected_book.price
-        self.description_label["text"] = "설명: " + self.selected_book.description
+        self.description_text.delete(1.0, END)      # 처음부터 끝까지 텍스트 창에 있는 내용을 비운다
+        self.description_text.insert(1.0, self.selected_book.description)
         self.link_label["text"] = "링크: " + self.selected_book.link
 
         self.detail_frame.tkraise()
 
-    def open_save_frame(self):
+    def set_edit_gui(self, gui):
+        self.edit_gui = gui
+
+    def open_edit_frame(self):
+        if self.edit_gui is not None:
+            self.edit_gui.open(self.selected_book, self.url_image.get_image())
+
+    def save_book(self):
         # 엘리먼트를 만듭니다.
         newBook = self.RB_engine.BooksDoc.createElement('book')
         titleEle = self.RB_engine.BooksDoc.createElement('title')

@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import font
 from Record_search_engine import RecordSearchEngine
-
+from statisticsGUI import StatisticsGUI
 
 
 class RecordBookGUI:
@@ -11,7 +11,7 @@ class RecordBookGUI:
 
     plus_button=None
     minus_button=None
-    statis_button=None
+    statistic_button=None
 
     record_listbox = None
     record_scrollbar = None
@@ -23,6 +23,9 @@ class RecordBookGUI:
     author_label = None
     publisher_label = None
 
+    # 통계 GUI
+    statistic_gui = None
+
     RB_engine=None
 
 
@@ -31,6 +34,7 @@ class RecordBookGUI:
         self.small_font = font.Font(size=11, family='Consolas')
 
         self.RB_engine=RecordSearchEngine()
+        self.statistic_gui = StatisticsGUI(frame)
 
         self.create_widget(frame)
         self.place_widget()
@@ -45,7 +49,8 @@ class RecordBookGUI:
         self.minus_button = Button(frame, text="-", width=2, height=1, font=self.TempFont,
                                    command=self.minusBook
                                    )
-        self.statis_button = Button(frame, text="주간 통계보기", width=10, height=1, font=self.TempFont)
+        self.statistic_button = Button(frame, text="주간 통계보기", width=14, height=1, font=self.TempFont,
+                                       command=self.statistic_gui.show_window)
 
         self.record_scrollbar = Scrollbar(self.record_frame)
         self.record_listbox = Listbox(self.record_frame, font=self.TempFont, width=40, height=14, activestyle="none",
@@ -66,7 +71,7 @@ class RecordBookGUI:
 
         self.plus_button.place(x=380, y=80)
         self.minus_button.place(x=420, y=80)
-        self.statis_button.place(x=40, y=80)
+        self.statistic_button.place(x=40, y=80)
 
         self.record_listbox.pack(side="left")
         self.record_scrollbar.pack(side="right", fill='y')

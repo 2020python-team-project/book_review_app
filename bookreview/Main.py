@@ -5,6 +5,7 @@ import tkinter.messagebox
 from bookSearchGUI import BookSearchGUI
 from LibrarySearchGUI import LibrarySearchGUI
 from RecordBookGUI import RecordBookGUI
+from editGUI import EditGUI
 
 class MainGUI:
     window = None
@@ -37,6 +38,7 @@ class MainGUI:
     library_result_frame = None
 
     # Left Frame Widget
+    edit_gui = None
 
     def __init__(self):
         self.window = Tk()
@@ -52,6 +54,8 @@ class MainGUI:
         self.build_library_search()
         self.build_left()
 
+        self.link_gui()
+
         change_frame(self.book_frame)
 
         self.window.mainloop()
@@ -61,6 +65,8 @@ class MainGUI:
         self.window.geometry("1000x600+200+100")
         self.window.resizable(False, False) #확대창 없애기
         self.window.configure(bg="beige")
+        # 아이콘 모양 변경할 수 있음
+        # self.window.iconbitmap(default="파일이름")
         self.window.option_add("*TCombobox*Listbox.font", self.TempFont) #콤보박스에 폰트넣기
 
     def set_font(self):
@@ -131,12 +137,15 @@ class MainGUI:
         self.library_search_gui = LibrarySearchGUI(self.library_frame)
 
     def build_left(self):
-        self.record_book_gui= RecordBookGUI(self.left_frame)
+        self.edit_gui = EditGUI(self.left_frame, 250, 130)
+        self.record_book_gui = RecordBookGUI(self.left_frame)
 
-
+    def link_gui(self):
+        self.book_search_gui.set_edit_gui(self.edit_gui)
 
 def change_frame(frame):
     frame.tkraise()
+
 
 MainGUI()
 
