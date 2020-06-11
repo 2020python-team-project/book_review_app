@@ -67,7 +67,7 @@ class BookSearchGUI:
         self.result_frame = Frame(frame, bg="white", width=420, height=330)
 
         self.keyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont)
-        self.book_search_button = Button(self.setting_frame, text="검색", font=self.TempFont,
+        self.book_search_button = Button(self.setting_frame, text="검색", font=self.TempFont,bg='indian red',
                                          command=self.search_books)
         self.keyword_entry.bind("<Return>", self.search_books)
 

@@ -46,7 +46,7 @@ class LibrarySearchGUI:
 
         self.citykeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont)
         self.dongkeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont, width=17)
-        self.library_search_button = Button(self.setting_frame, text="검색", font=self.TempFont,
+        self.library_search_button = Button(self.setting_frame, text="검색", font=self.TempFont,bg='indian red',
                                          command=self.search_library,width=5,height=2)
         self.citykeyword_entry.bind("<Return>", self.search_library)
         self.dongkeyword_entry.bind("<Return>", self.search_library)

@@ -49,7 +49,7 @@ class RecordBookGUI:
         self.minus_button = Button(frame, text="-", width=2, height=1, font=self.TempFont,
                                    command=self.minusBook
                                    )
-        self.statistic_button = Button(frame, text="주간 통계보기", width=14, height=1, font=self.TempFont,
+        self.statistic_button = Button(frame, text="주간 통계보기", width=14, height=1, font=self.TempFont,bg='plum3',
                                        command=self.statistic_gui.show_window)
 
         self.record_scrollbar = Scrollbar(self.record_frame)

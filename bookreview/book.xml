@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <booklist cnt="3">
  <book ISBN="0399250395">
-       <title>hungry bear</title>
-       <author> Eric Carle</author>
+       <title>채식주의자</title>
+       <author> 한강</author>
  <publisher> Philomel Books</publisher>
  <description> Celebrating the 40th anniverary of one of the most popular children's books ever created</description>
  </book>
  <book ISBN="0964729237">
-    <title lang="english">The Shack</title>
-    <author>Keith Finch</author>
+    <title>아가미</title>
+    <author>구병모</author>
  </book>
  <book ISBN="0553281097">
-    <title>You Can Negotiate Anything</title>
-     <author>Herb Cohen</author>
+    <title>소년이 온다</title>
+     <author>한강</author>
     <category cid="12">Negotiate and narrative skill</category>
  </book>
 </booklist>

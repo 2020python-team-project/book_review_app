@@ -16,7 +16,7 @@ class RecordSearchEngine:
     def LoadXMLFromFile(self):
 
         try:
-            self.xmlFD = open("book.xml")  # xml 문서를 open합니다.
+            self.xmlFD = open("book.xml",encoding="UTF-8")  # xml 문서를 open합니다.
         except IOError:
             print("invalid file name or path")
             return None

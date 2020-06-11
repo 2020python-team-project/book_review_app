@@ -120,9 +120,9 @@ class MainGUI:
     def build_hud(self):
         # Create
         self.title_label = Label(self.hud_frame, font=self.title_font, text="♥ 나만의 독서기록장 ♥", bg="beige")
-        self.search_book_button = Button(self.hud_frame, text="책 검색", width=11, height=1, font=self.TempFont,
+        self.search_book_button = Button(self.hud_frame, text="책 검색", width=11, height=1, font=self.TempFont,bg='DarkOliveGreen3',
                                          command=lambda: change_frame(self.book_frame))
-        self.search_library_button = Button(self.hud_frame, text="도서관 찾기", width=11, height=1, font=self.TempFont,
+        self.search_library_button = Button(self.hud_frame, text="도서관 찾기", width=11, height=1, font=self.TempFont,bg='DarkOliveGreen3',
                                             command=lambda: change_frame(self.library_frame))
 
         # Place
