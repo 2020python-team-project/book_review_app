@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import font
 from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
-from Record_search_engine import RecordSearchEngine
+from bookManager import BookManager
 
 
 class BookSearchGUI:
@@ -51,80 +51,80 @@ class BookSearchGUI:
     selected_book = None
 
     def __init__(self, frame):
-        self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
-        self.detail_font = font.Font(size=10, family='Consolas')
+        self.default_font = font.Font(size=14, weight='bold', family='메이플스토리')
+        self.detail_font = font.Font(family='메이플스토리', weight="bold", size=11)
 
         self.create_widget(frame)
         self.place_widget()
 
         # data
         self.bsch_engine = BookSearchEngine()
-        self.RB_engine = RecordSearchEngine()
+        # self.RB_engine = BookManager()
 
     def create_widget(self, frame):
         self.setting_frame = Frame(frame, bg="white", width=420, height=100)
-        self.detail_frame = Frame(frame, bg="white", width=420, height=330)
-        self.result_frame = Frame(frame, bg="white", width=420, height=330)
+        self.detail_frame = Frame(frame, bg="white", width=420, height=335)
+        self.result_frame = Frame(frame, bg="white")
 
-        self.keyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont)
-        self.book_search_button = Button(self.setting_frame, text="검색", font=self.TempFont,bg='indian red',
+        self.keyword_entry = Entry(self.setting_frame, relief="solid", font=self.default_font, width=17)
+        self.book_search_button = Button(self.setting_frame, text="검색", font=self.default_font, bg='indian red',
                                          command=self.search_books)
         self.keyword_entry.bind("<Return>", self.search_books)
 
-        self.rst_num_label = Label(self.setting_frame, font=self.TempFont, bg="white", text="검색 결과: ")
+        self.rst_num_label = Label(self.setting_frame, font=self.default_font, bg="white", text="검색 결과: ")
         self.head_combobox = \
-            ttk.Combobox(self.setting_frame, font=self.TempFont, values=self.heads, width=6, height=3, state="readonly")
+            ttk.Combobox(self.setting_frame, font=self.default_font, values=self.heads, width=4, height=3, state="readonly")
         self.book_catg_combobox = \
-            ttk.Combobox(self.setting_frame, font=self.TempFont, values=self.categories, width=10, height=7, state="readonly")
+            ttk.Combobox(self.setting_frame, font=self.default_font, values=self.categories, width=6, height=7, state="readonly")
 
         self.head_combobox.set(self.heads[0])
         self.book_catg_combobox.set(self.categories[0])
 
-        self.result_listbox = Listbox(self.result_frame, font=self.TempFont, width=40, height=14, activestyle="none",
+        self.result_listbox = Listbox(self.result_frame, font=self.default_font, width=30, height=15, activestyle="none",
                                       selectmode="single")
-        self.result_listbox.bind("<Double-Button-1>", self.show_detail) #더블클릭하면 변환
+        self.result_listbox.bind("<Double-Button-1>", self.show_detail)     # 더블클릭하면 변환
         self.result_scrollbar = Scrollbar(self.result_frame)
 
         self.result_listbox["yscrollcommand"] = self.result_scrollbar.set
         self.result_scrollbar["command"] = self.result_listbox.yview
 
-        self.image_label = Label(self.detail_frame)
+        self.image_label = Label(self.detail_frame, bg="white", bd=1, relief="solid")
         self.title_label = Label(self.detail_frame, font=self.detail_font, text="제목", bg='white')
         self.author_label = Label(self.detail_frame, font=self.detail_font, text="저자", bg='white')
         self.publisher_label = Label(self.detail_frame, font=self.detail_font, text="출판사", bg='white')
         self.pubdate_label = Label(self.detail_frame, font=self.detail_font, text="출판일", bg='white')
         self.price_label = Label(self.detail_frame, font=self.detail_font, text="가격", bg='white')
-        self.description_text = Text(self.detail_frame, font=self.detail_font, bg='white', width=55, height=6)
+        self.description_text = Text(self.detail_frame, font=self.detail_font, bg='white', width=40, height=6, relief="solid")
         self.link_label = Label(self.detail_frame, font=self.detail_font, text="링크", bg='white')
-        self.back_to_list_button = Button(self.detail_frame, font=self.detail_font, text="목록으로",
-                                          command=self.result_frame.tkraise)
-        self.save_button = Button(self. detail_frame, font=self.detail_font, text="저장하기",
+
+        self.back_to_list_button = Button(self.detail_frame, font=self.default_font, text="목록으로",
+                                          command=self.detail_frame.place_forget)
+        self.save_button = Button(self. detail_frame, font=self.default_font, text="저장하기",
                                   command=self.open_edit_frame)
 
     def place_widget(self):
         # Place Widget
         self.setting_frame.place(x=250, y=10, anchor="n")
-        self.detail_frame.place(x=250, y=130, anchor="n")
         self.result_frame.place(x=250, y=130, anchor="n")
 
-        self.keyword_entry.place(x=120, y=30, anchor="w")
+        self.keyword_entry.place(x=100, y=30, anchor="w")
         self.book_search_button.place(x=340, y=30, anchor="w")
         self.head_combobox.place(x=20, y=30, anchor="w")
         self.rst_num_label.place(x=20, y=75, anchor="w")
-        self.book_catg_combobox.place(x=270, y=75, anchor="w")
+        self.book_catg_combobox.place(x=300, y=75, anchor="w")
 
         self.result_listbox.pack(side="left")
         self.result_scrollbar.pack(side="right", fill='y')
 
-        self.image_label.pack()
         self.image_label.place(x=10, y=10)
         self.title_label.place(x=120, y=10)
-        self.author_label.place(x=120, y=40)
-        self.publisher_label.place(x=120, y=70)
-        self.pubdate_label.place(x=120, y=100)
-        self.price_label.place(x=120, y=130)
-        self.description_text.place(x=10, y=160)
-        self.link_label.place(x=10, y=250)
+        self.author_label.place(x=120, y=35)
+        self.publisher_label.place(x=120, y=60)
+        self.pubdate_label.place(x=120, y=85)
+        self.price_label.place(x=120, y=110)
+        self.description_text.place(x=210, y=150, anchor="n")
+        # self.link_label.place(x=10, y=250) 버튼을 만들어서 웹이랑 연결하자
+
         self.back_to_list_button.place(x=10, y=300, anchor="w")
         self.save_button.place(x=320, y=300, anchor="w")
 
@@ -167,6 +167,7 @@ class BookSearchGUI:
         # self.description_text["state"] = "disable"
         self.link_label["text"] = "링크: " + self.selected_book.link
 
+        self.detail_frame.place(x=250, y=130, anchor="n")
         self.detail_frame.tkraise()
 
     def set_edit_gui(self, gui):
@@ -175,36 +176,33 @@ class BookSearchGUI:
     def open_edit_frame(self):
         if self.edit_gui is not None:
             self.edit_gui.open(self.selected_book, self.url_image.get_image())
+        self.detail_frame.place_forget()
 
     def save_book(self):
-        # 엘리먼트를 만듭니다.
-        newBook = self.RB_engine.BooksDoc.createElement('book')
-        titleEle = self.RB_engine.BooksDoc.createElement('title')
-        titleNode = self.RB_engine.BooksDoc.createTextNode(self.selected_book.title)
-
-        # 텍스트 노드와 Title 엘리먼트를 연결 시킵니다.
-        try:
-            titleEle.appendChild(titleNode)
-        except Exception:
-            print("append child fail- please,check the parent element & node!!!")
-            return None
-        else:
-            titleEle.appendChild(titleNode)
-
-        # Title을 book 엘리먼트와 연결 시킵니다.
-        try:
-            newBook.appendChild(titleEle)
-            booklist = self.RB_engine.BooksDoc.firstChild
-        except Exception:
-            print("append child fail- please,check the parent element & node!!!")
-            return None
-        else:
-            if booklist != None:
-                booklist.appendChild(newBook)
-                print(booklist.toprettyxml())
-                #앨리먼트와 텍스트 추가는 했고.. record 창 갱신은 어떻게?
-
-
-
-
-
+        # # 엘리먼트를 만듭니다.
+        # newBook = self.RB_engine.BooksDoc.createElement('book')
+        # titleEle = self.RB_engine.BooksDoc.createElement('title')
+        # titleNode = self.RB_engine.BooksDoc.createTextNode(self.selected_book.title)
+        #
+        # # 텍스트 노드와 Title 엘리먼트를 연결 시킵니다.
+        # try:
+        #     titleEle.appendChild(titleNode)
+        # except Exception:
+        #     print("append child fail- please,check the parent element & node!!!")
+        #     return None
+        # else:
+        #     titleEle.appendChild(titleNode)
+        #
+        # # Title을 book 엘리먼트와 연결 시킵니다.
+        # try:
+        #     newBook.appendChild(titleEle)
+        #     booklist = self.RB_engine.BooksDoc.firstChild
+        # except Exception:
+        #     print("append child fail- please,check the parent element & node!!!")
+        #     return None
+        # else:
+        #     if booklist != None:
+        #         booklist.appendChild(newBook)
+        #         print(booklist.toprettyxml())
+        #         # 앨리먼트와 텍스트 추가는 했고.. record 창 갱신은 어떻게?
+        pass

@@ -7,9 +7,10 @@ from LibrarySearchGUI import LibrarySearchGUI
 from RecordBookGUI import RecordBookGUI
 from editGUI import EditGUI
 
+
 class MainGUI:
     window = None
-    TempFont = None
+    button_font = None
     title_font = None
 
     # Main Frame
@@ -17,7 +18,7 @@ class MainGUI:
     image_frame = None
     book_frame = None
     library_frame = None
-    left_frame = None
+    bookcase_frame = None
 
     # HUD Frame Widget
     title_label = None
@@ -30,8 +31,8 @@ class MainGUI:
 
     # Book Search Frame Widget
     book_search_gui = None
-    library_search_gui=None
-    record_book_gui=None
+    library_search_gui = None
+    record_book_gui = None
 
     # Library Search Frame Widget
     library_setting_frame = None
@@ -52,26 +53,24 @@ class MainGUI:
 
         self.build_book_search()
         self.build_library_search()
-        self.build_left()
+        self.build_bookcase()
 
         self.link_gui()
 
         change_frame(self.book_frame)
 
-        self.window.mainloop()
+    def set_font(self):
+        self.title_font = font.Font(size=24, weight="bold", family="메이플스토리")
+        self.button_font = font.Font(size=15, weight='bold', family='메이플스토리')
 
     def set_window(self):
         self.window.title("♥ 나만의 독서기록장 ♥")
         self.window.geometry("1000x600+200+100")
-        self.window.resizable(False, False) #확대창 없애기
+        self.window.resizable(False, False)     # 확대창 없애기
         self.window.configure(bg="beige")
         # 아이콘 모양 변경할 수 있음
         # self.window.iconbitmap(default="파일이름")
-        self.window.option_add("*TCombobox*Listbox.font", self.TempFont) #콤보박스에 폰트넣기
-
-    def set_font(self):
-        self.title_font = font.Font(size=24, weight="bold", family="Consolas")
-        self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
+        self.window.option_add("*TCombobox*Listbox.font", self.button_font)    # 콤보박스에 폰트넣기
 
     def build_main_frame(self):
         # Create
@@ -79,26 +78,21 @@ class MainGUI:
         self.image_frame = Frame(self.window, width=500, height=200, bg="beige")
         self.book_frame = Frame(self.window, width=500, height=500, bg="beige")
         self.library_frame = Frame(self.window, width=500, height=500, bg="beige")
-        self.left_frame = Frame(self.window, width=500, height=500, bg="beige")
+        self.bookcase_frame = Frame(self.window, width=500, height=500, bg="beige")
 
         # Place
         self.hud_frame.grid(row=0, column=0)
         self.image_frame.grid(row=0, column=1)
         self.book_frame.grid(row=1, column=0)
         self.library_frame.grid(row=1, column=0)
-        self.left_frame.grid(row=1, column=1)
+        self.bookcase_frame.grid(row=1, column=1)
 
         # debug 용
-        # self.hud_frame["bd"] = 1  #테두리 두께
-        # self.image_frame["bd"] = 1
-        # self.book_frame["bd"] = 1
-        # self.library_frame["bd"] = 1
-        # self.left_frame["bd"] = 1
-        # self.hud_frame["relief"] = "solid" #테두리모양
-        # self.image_frame["relief"] = "solid"
-        # self.book_frame["relief"] = "solid"
-        # self.library_frame["relief"] = "solid"
-        # self.left_frame["relief"] = "solid"
+        # self.hud_frame.configure(bd=1, relief="solid")
+        # self.image_frame.configure(bd=1, relief="solid")
+        # self.book_frame.configure(bd=1, relief="solid")
+        # self.library_frame.configure(bd=1, relief="solid")
+        # self.bookcase_frame.configure(bd=1, relief="solid")
 
     def build_image(self):
         self.book_image = PhotoImage(file="Resource/Image/Book.png")
@@ -120,9 +114,9 @@ class MainGUI:
     def build_hud(self):
         # Create
         self.title_label = Label(self.hud_frame, font=self.title_font, text="♥ 나만의 독서기록장 ♥", bg="beige")
-        self.search_book_button = Button(self.hud_frame, text="책 검색", width=11, height=1, font=self.TempFont,bg='DarkOliveGreen3',
+        self.search_book_button = Button(self.hud_frame, text="책 검색", width=8, height=1, font=self.button_font, bg='DarkOliveGreen3',
                                          command=lambda: change_frame(self.book_frame))
-        self.search_library_button = Button(self.hud_frame, text="도서관 찾기", width=11, height=1, font=self.TempFont,bg='DarkOliveGreen3',
+        self.search_library_button = Button(self.hud_frame, text="도서관 찾기", width=8, height=1, font=self.button_font, bg='DarkOliveGreen3',
                                             command=lambda: change_frame(self.library_frame))
 
         # Place
@@ -132,20 +126,27 @@ class MainGUI:
 
     def build_book_search(self):
         self.book_search_gui = BookSearchGUI(self.book_frame)
+        self.edit_gui = EditGUI(self.book_frame, 250, 10)
 
     def build_library_search(self):
         self.library_search_gui = LibrarySearchGUI(self.library_frame)
 
-    def build_left(self):
-        self.edit_gui = EditGUI(self.left_frame, 250, 130)
-        self.record_book_gui = RecordBookGUI(self.left_frame)
+    def build_bookcase(self):
+        self.record_book_gui = RecordBookGUI(self.bookcase_frame)
+        self.edit_gui.debug()
 
     def link_gui(self):
         self.book_search_gui.set_edit_gui(self.edit_gui)
+        self.edit_gui.link(book_manager=self.record_book_gui.RB_engine)
+
+    def run(self):
+        self.window.mainloop()
+
 
 def change_frame(frame):
     frame.tkraise()
 
 
-MainGUI()
+main = MainGUI()
+main.run()
 

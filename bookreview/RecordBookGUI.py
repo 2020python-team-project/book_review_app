@@ -1,7 +1,7 @@
 # -*- coding: cp949 -*-
 from tkinter import *
 from tkinter import font
-from Record_search_engine import RecordSearchEngine
+from bookManager import BookManager
 from statisticsGUI import StatisticsGUI
 
 
@@ -9,9 +9,9 @@ class RecordBookGUI:
     record_frame = None
     detail_frame = None
 
-    plus_button=None
-    minus_button=None
-    statistic_button=None
+    plus_button = None
+    minus_button = None
+    statistic_button = None
 
     record_listbox = None
     record_scrollbar = None
@@ -26,19 +26,18 @@ class RecordBookGUI:
     # 통계 GUI
     statistic_gui = None
 
-    RB_engine=None
+    RB_engine = None
 
-
-    def __init__(self,frame):
+    def __init__(self, frame):
         self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
         self.small_font = font.Font(size=11, family='Consolas')
 
-        self.RB_engine=RecordSearchEngine()
+        self.RB_engine = BookManager(self)
         self.statistic_gui = StatisticsGUI(frame)
 
         self.create_widget(frame)
         self.place_widget()
-        self.record_list()
+        self.update_record_list()
 
     def create_widget(self, frame):
         self.detail_frame = Frame(frame, bg="white", width=420, height=330)
@@ -69,9 +68,9 @@ class RecordBookGUI:
         self.detail_frame.place(x=250, y=130, anchor="n")
         self.record_frame.place(x=250, y=130, anchor="n")
 
-        self.plus_button.place(x=380, y=80)
-        self.minus_button.place(x=420, y=80)
-        self.statistic_button.place(x=40, y=80)
+        self.plus_button.place(x=380, y=20)
+        self.minus_button.place(x=420, y=20)
+        self.statistic_button.place(x=40, y=20)
 
         self.record_listbox.pack(side="left")
         self.record_scrollbar.pack(side="right", fill='y')
@@ -82,22 +81,25 @@ class RecordBookGUI:
         self.author_label.place(x=50, y=40)
         self.publisher_label.place(x=50, y=70)
 
-    def record_list(self):
-        if not self.checkDocument():  # DOM이 None인지 검사합니다.
-            return None
-        #self.books.clear()
-        self.booklist = self.RB_engine.BooksDoc.childNodes
-        self.book = self.booklist[0].childNodes
-        i=0
-        for item in self.book:
-            if item.nodeName == "book":
-                subitems = item.childNodes  # item 들어 있는 노드들을 가져옵니다.
-                for atom in subitems:
-                    if atom.nodeName in ["title",]:
-                        self.record_listbox.insert(i,atom.firstChild.nodeValue)  # 책 목록을 출력 합니다.
-                        i+=1
+    def update_record_list(self):
+        # if not self.checkDocument():  # DOM이 None인지 검사합니다.
+        #     return None
+        # #self.books.clear()
+        # self.booklist = self.RB_engine.BooksDoc.childNodes
+        # self.book = self.booklist[0].childNodes
+        # i=0
+        # for item in self.book:
+        #     if item.nodeName == "book":
+        #         subitems = item.childNodes  # item 들어 있는 노드들을 가져옵니다.
+        #         for atom in subitems:
+        #             if atom.nodeName in ["title",]:
+        #                 self.record_listbox.insert(i,atom.firstChild.nodeValue)  # 책 목록을 출력 합니다.
+        #                 i+=1
+        self.record_listbox.delete(0, self.record_listbox.size())       # 원래 리스트 박스에 있던거 모두 삭제
+        for i, book in enumerate(self.RB_engine.books):
+            self.record_listbox.insert(i, book.title)
 
-    def show_detail(self,event):
+    def show_detail(self, event):
         selected_index = self.record_listbox.curselection()
         if selected_index == ():
             return

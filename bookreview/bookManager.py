@@ -4,19 +4,29 @@ from urllib import parse
 from book import Book
 from xml.dom.minidom import parse, parseString
 from xml.etree import ElementTree
+from copy import *
 
-class RecordSearchEngine:
+
+class BookManager:
+    ui = None
+
     xmlFD = -1
-    books=[]
+    books = []
 
-    def __init__(self):
-        self.BooksDoc=self.LoadXMLFromFile()
+    def __init__(self, ui):
+        self.ui = ui
+        self.BooksDoc = self.LoadXMLFromFile()
         self.get_book_info()
 
-    def LoadXMLFromFile(self):
+    def add_book(self, book):
+        self.books.append(copy(book))
+        self.ui.update_record_list()
+        for book in self.books:
+            print(book.title)
 
+    def LoadXMLFromFile(self):
         try:
-            self.xmlFD = open("book.xml",encoding="UTF-8")  # xml 문서를 open합니다.
+            self.xmlFD = open("book.xml", encoding="UTF-8")  # xml 문서를 open합니다.
         except IOError:
             print("invalid file name or path")
             return None
@@ -31,7 +41,7 @@ class RecordSearchEngine:
         return None
 
     def get_book_info(self):
-        book= self.BooksDoc.getElementsByTagName("book")
+        book = self.BooksDoc.getElementsByTagName("book")
         book_info = dict()
         for node in book:
             book_info["title"] = node.getElementsByTagName("title")[0].firstChild
