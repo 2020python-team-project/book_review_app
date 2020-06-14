@@ -5,6 +5,9 @@ from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
 from bookManager import BookManager
 
+TEXT_START = 1.0
+TEXT_END = END
+
 
 class BookSearchGUI:
     setting_frame = None
@@ -68,7 +71,7 @@ class BookSearchGUI:
 
         self.keyword_entry = Entry(self.setting_frame, relief="solid", font=self.default_font, width=17)
         self.book_search_button = Button(self.setting_frame, text="검색", font=self.default_font, bg='indian red',
-                                         command=self.search_books)
+                                         width=4, height=2, command=self.search_books)
         self.keyword_entry.bind("<Return>", self.search_books)
 
         self.rst_num_label = Label(self.setting_frame, font=self.default_font, bg="white", text="검색 결과: ")
@@ -107,11 +110,11 @@ class BookSearchGUI:
         self.setting_frame.place(x=250, y=10, anchor="n")
         self.result_frame.place(x=250, y=130, anchor="n")
 
-        self.keyword_entry.place(x=100, y=30, anchor="w")
-        self.book_search_button.place(x=340, y=30, anchor="w")
+        self.keyword_entry.place(x=105, y=30, anchor="w")
+        self.book_search_button.place(x=340, y=50, anchor="w")
         self.head_combobox.place(x=20, y=30, anchor="w")
-        self.rst_num_label.place(x=20, y=75, anchor="w")
-        self.book_catg_combobox.place(x=300, y=75, anchor="w")
+        self.rst_num_label.place(x=20, y=70, anchor="w")
+        self.book_catg_combobox.place(x=230, y=70, anchor="w")
 
         self.result_listbox.pack(side="left")
         self.result_scrollbar.pack(side="right", fill='y')
@@ -140,32 +143,33 @@ class BookSearchGUI:
         self.rst_num_label["text"] = "검색 결과: " + str(self.bsch_engine.get_total()) + "건"
         self.add_book_in_list()
 
+        self.detail_frame.place_forget()
+
     def add_book_in_list(self):
         self.result_listbox.delete(0, self.result_listbox.size())
-        for i, book in enumerate(self.bsch_engine.books):
-            self.result_listbox.insert(i, book.title)
+        for i, book in enumerate(self.bsch_engine.searched_books):
+            self.result_listbox.insert(i, book["title"])
 
     def show_detail(self, event):
         selected_index = self.result_listbox.curselection()
         if selected_index == ():
             return
-        self.selected_book = self.bsch_engine.books[selected_index[0]]
+        self.selected_book = self.bsch_engine.searched_books[selected_index[0]]
 
-        self.selected_book.print_info()
+        self.url_image = UrlImage(self.selected_book["image"])
 
-        self.url_image = UrlImage(self.selected_book.image)
+        self.image_label.configure(image=self.url_image.get_image())
+        self.title_label.configure(text=f"제목: {self.selected_book['title']}")
+        self.author_label.configure(text=f"저자: {self.selected_book['author']}")
+        self.publisher_label.configure(text=f"출판사: {self.selected_book['publisher']}")
+        self.pubdate_label.configure(text=f"출판일: {self.selected_book['pubdate']}")
+        self.price_label.configure(text=f"가격: {self.selected_book['price']}")
 
-        self.image_label["image"] = self.url_image.get_image()
-        self.title_label["text"] = "제목: " + self.selected_book.title
-        self.author_label["text"] = "저자: " + self.selected_book.author
-        self.publisher_label["text"] = "출판사: " + self.selected_book.publisher
-        self.pubdate_label["text"] = "출판일: " + self.selected_book.pubdate
-        self.price_label["text"] = "가격: " + self.selected_book.price
-
-        self.description_text.delete(1.0, END)      # 처음부터 끝까지 텍스트 창에 있는 내용을 비운다
-        self.description_text.insert(1.0, self.selected_book.description)
-        # self.description_text["state"] = "disable"
-        self.link_label["text"] = "링크: " + self.selected_book.link
+        self.description_text.configure(state="normal")
+        self.description_text.delete(TEXT_START, TEXT_END)
+        self.description_text.insert(TEXT_START, self.selected_book["description"])
+        self.description_text.configure(state="disable")
+        # self.link_label["text"] = "링크: " + self.selected_book.link
 
         self.detail_frame.place(x=250, y=130, anchor="n")
         self.detail_frame.tkraise()
@@ -175,7 +179,7 @@ class BookSearchGUI:
 
     def open_edit_frame(self):
         if self.edit_gui is not None:
-            self.edit_gui.open(self.selected_book, self.url_image.get_image())
+            self.edit_gui.start_edit(self.selected_book, self.url_image.get_image())
         self.detail_frame.place_forget()
 
     def save_book(self):

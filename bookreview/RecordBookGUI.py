@@ -29,8 +29,8 @@ class RecordBookGUI:
     RB_engine = None
 
     def __init__(self, frame):
-        self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
-        self.small_font = font.Font(size=11, family='Consolas')
+        self.TempFont = font.Font(size=14, weight='bold', family='메이플스토리')
+        self.small_font = font.Font(size=11, family='메이플스토리')
 
         self.RB_engine = BookManager(self)
         self.statistic_gui = StatisticsGUI(frame)
@@ -40,7 +40,7 @@ class RecordBookGUI:
         self.update_record_list()
 
     def create_widget(self, frame):
-        self.detail_frame = Frame(frame, bg="white", width=420, height=330)
+        self.detail_frame = Frame(frame, bg="white", width=420, height=335)
         self.record_frame = Frame(frame, bg="white", width=420, height=330)
 
         self.plus_button = Button(frame, text="+", width=2, height=1, font=self.TempFont,
@@ -52,20 +52,20 @@ class RecordBookGUI:
                                        command=self.statistic_gui.show_window)
 
         self.record_scrollbar = Scrollbar(self.record_frame)
-        self.record_listbox = Listbox(self.record_frame, font=self.TempFont, width=40, height=14, activestyle="none",
+        self.record_listbox = Listbox(self.record_frame, font=self.TempFont, width=30, height=15, activestyle="none",
                                       selectmode="single", yscrollcommand=self.record_scrollbar.set)
 
         self.record_listbox.bind("<Double-Button-1>", self.show_detail)
 
         self.back_to_list_button = Button(self.detail_frame, font=self.TempFont, text="목록으로",
-                                          command=self.record_frame.tkraise)
+                                          command=self.detail_frame.place_forget)
 
         self.title_label = Label(self.detail_frame, font=self.small_font, text="제목", bg='white')
         self.author_label = Label(self.detail_frame, font=self.small_font, text="저자", bg='white')
         self.publisher_label = Label(self.detail_frame, font=self.small_font, text="출판사",bg='white')
 
     def place_widget(self):
-        self.detail_frame.place(x=250, y=130, anchor="n")
+        # self.detail_frame.place(x=250, y=130, anchor="n")
         self.record_frame.place(x=250, y=130, anchor="n")
 
         self.plus_button.place(x=380, y=20)
@@ -105,9 +105,11 @@ class RecordBookGUI:
             return
         selected_book = self.RB_engine.books[selected_index[0]]
 
-        self.title_label["text"] = "제목: "+ selected_book.title
-        self.author_label["text"] = "저자: "+ selected_book.author
-        self.publisher_label["text"] = "출판사: "+ selected_book.publisher
+        self.title_label["text"] = "제목: " + selected_book.title
+        self.author_label["text"] = "저자: " + selected_book.author
+        self.publisher_label["text"] = "출판사: " + selected_book.publisher
+
+        self.detail_frame.place(x=250, y=130, anchor="n")
         self.detail_frame.tkraise()
 
     def plusBook(self):

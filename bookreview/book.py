@@ -2,7 +2,8 @@
 class Book:
 
     def __init__(self, title="", link="", image="", author="", price="",
-                 publisher="", pubdate="",  description=""):
+                 publisher="", pubdate="",  description="",
+                 comment="", date="", rating=""):
         self.title = title
         self.link = link
         self.image = image
@@ -12,9 +13,9 @@ class Book:
         self.pubdate = pubdate
         self.description = description
 
-        self.user_comment = str()
-        self.edit_date = str()
-        self.rating = int()
+        self.user_comment = comment
+        self.edit_date = date
+        self.rating = rating
 
     def print_info(self):
         print(self.title)

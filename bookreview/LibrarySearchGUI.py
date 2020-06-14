@@ -31,8 +31,8 @@ class LibrarySearchGUI:
 
 
     def __init__(self, frame):
-        self.TempFont = font.Font(size=14, weight='bold', family='Consolas')
-        self.big_font = font.Font(size=25, weight='bold',family='Consolas')
+        self.TempFont = font.Font(size=14, weight='bold', family='메이플스토리')
+        self.big_font = font.Font(size=25, weight='bold', family='메이플스토리')
 
         self.create_widget(frame)
         self.place_widget()
@@ -41,13 +41,13 @@ class LibrarySearchGUI:
 
     def create_widget(self, frame):
         self.setting_frame = Frame(frame, bg="white", width=420, height=100)
-        self.detail_frame = Frame(frame, bg="white", width=420, height=330)
+        self.detail_frame = Frame(frame, bg="white", width=420, height=335)
         self.result_frame = Frame(frame, bg="white", width=420, height=330)
 
-        self.citykeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont)
-        self.dongkeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont, width=17)
-        self.library_search_button = Button(self.setting_frame, text="검색", font=self.TempFont,bg='indian red',
-                                         command=self.search_library,width=5,height=2)
+        self.citykeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont, width=15)
+        self.dongkeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont, width=15)
+        self.library_search_button = Button(self.setting_frame, text="검색", font=self.TempFont, bg='indian red',
+                                            command=self.search_library, width=4, height=2)
         self.citykeyword_entry.bind("<Return>", self.search_library)
         self.dongkeyword_entry.bind("<Return>", self.search_library)
 
@@ -56,7 +56,7 @@ class LibrarySearchGUI:
 
         #result
         self.result_scrollbar = Scrollbar(self.result_frame)
-        self.result_listbox = Listbox(self.result_frame, font=self.TempFont, width=40, height=14, activestyle="none",
+        self.result_listbox = Listbox(self.result_frame, font=self.TempFont, width=30, height=15, activestyle="none",
                                       selectmode="single", yscrollcommand=self.result_scrollbar.set)
 
         self.result_listbox.bind("<Double-Button-1>", self.show_detail)
@@ -69,20 +69,19 @@ class LibrarySearchGUI:
         self.hompage_label=Label(self.detail_frame,font=self.TempFont,text="홈페이지: ",bg='white')
 
         self.back_to_list_button = Button(self.detail_frame, font=self.TempFont, text="목록으로",
-                                          command=self.result_frame.tkraise)
+                                          command=self.detail_frame.place_forget)
 
 
     def place_widget(self):
         # Place Widget
         self.setting_frame.place(x=250, y=10, anchor="n")
-        self.detail_frame.place(x=250, y=130, anchor="n")
         self.result_frame.place(x=250, y=130, anchor="n")
 
-        self.citykeyword_entry.place(x=120, y=30, anchor="w")
-        self.dongkeyword_entry.place(x=150, y=75, anchor="w")
+        self.citykeyword_entry.place(x=130, y=30, anchor="w")
+        self.dongkeyword_entry.place(x=130, y=70, anchor="w")
         self.library_search_button.place(x=340, y=50, anchor="w")
-        self.first_label.place(x=20,y=30, anchor="w")
-        self.second_label.place(x=20, y=75, anchor="w")
+        self.first_label.place(x=20, y=30, anchor="w")
+        self.second_label.place(x=20, y=70, anchor="w")
 
         self.result_listbox.pack(side="left")
         self.result_scrollbar.pack(side="right", fill='y')
@@ -96,7 +95,7 @@ class LibrarySearchGUI:
         self.back_to_list_button.place(x=10, y=300, anchor="w")
 
 
-    def search_library(self):
+    def search_library(self, event=None):
         self.Lsrch_engine.search_city=\
             self.Lsrch_engine.urlencode(self.citykeyword_entry.get())
         self.Lsrch_engine.search_dong = \
@@ -105,10 +104,12 @@ class LibrarySearchGUI:
 
         self.result_listbox.delete(0, self.result_listbox.size())
         for i, lib in enumerate(self.Lsrch_engine.library_list):
-            self.result_listbox.insert(i,lib.LIBRRY_NM)
+            self.result_listbox.insert(i, lib.LIBRRY_NM)
+
+        self.detail_frame.place_forget()    # detail창이 띄워진 상태일 수도 있으니 닫는다.
 
 
-    def show_detail(self,event):
+    def show_detail(self, event):
         selected_index = self.result_listbox.curselection()
         if selected_index == ():
             return
@@ -119,4 +120,6 @@ class LibrarySearchGUI:
         self.openTime_label["text"]="영업시간: "+selected.READROOM_OPEN_TM_INFO
         self.restDay_label["text"]="휴관일: "+selected.READROOM_REST_DE_INFO
         self.hompage_label["text"]="홈페이지: "+selected.HMPG_ADDR
+
+        self.detail_frame.place(x=250, y=130, anchor="n")
         self.detail_frame.tkraise()

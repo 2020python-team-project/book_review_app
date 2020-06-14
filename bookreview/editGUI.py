@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import font
 from urlImage import *
+from book import Book
 import copy
 from urlImage import UrlImage
 
@@ -29,7 +30,7 @@ class EditGUI:
     comment_edit_text = None
     comment_edit_scrollbar = None
 
-    book = None
+    book_dic = None
 
     # 책 리스트
     book_manager = None
@@ -105,12 +106,12 @@ class EditGUI:
         self.comment_edit_scrollbar.pack(side="right", fill="y")
         self.comment_edit_frame.place(x=25, y=260)
 
-    def open(self, book, image):
-        self.book = copy.copy(book)
+    def start_edit(self, book, image):
+        self.book_dic = book    # 복사할 필요 없..지?
         self.image_label["image"] = image
-        self.title_label.configure(text=self.book.title)
-        self.author_label.configure(text=self.book.author)
-        self.publisher_label.configure(text=self.book.publisher)
+        self.title_label.configure(text=self.book_dic["title"])
+        self.author_label.configure(text=self.book_dic["author"])
+        self.publisher_label.configure(text=self.book_dic["publisher"])
 
         self.frame.place(x=self.position[0], y=self.position[1], anchor="n")
         self.frame.tkraise()
@@ -119,11 +120,20 @@ class EditGUI:
         self.frame.place_forget()
 
     def save(self):
-        self.book.user_comment = self.comment_edit_text.get(TEXT_START, TEXT_END)
-        self.book.edit_date = self.date_gui.get()
-        self.book.rating = self.rating_scale.get()
-        self.book_manager.add_book(self.book)
-
+        book = Book(
+            title=self.book_dic["title"],
+            link=self.book_dic["link"],
+            image=self.book_dic["image"],
+            author=self.book_dic["author"],
+            price=self.book_dic["price"],
+            publisher=self.book_dic["publisher"],
+            pubdate=self.book_dic["pubdate"],
+            description=self.book_dic["description"],
+            comment=self.comment_edit_text.get(TEXT_START, TEXT_END),
+            date=self.date_gui.get(),
+            rating=self.rating_scale.get()
+        )
+        self.book_manager.add_book(book)
         self.close()
 
     def debug(self):

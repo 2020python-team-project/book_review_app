@@ -48,7 +48,7 @@ class BookSearchEngine:
     docm = ""
 
     search_total = int()
-    books = []      # 받아온 책의 정보를 담은 Book 객체를 저장하는 리스트
+    searched_books = []      # 받아온 책의 정보를 담은 Book 객체를 저장하는 리스트
 
     def __init__(self):
 
@@ -82,7 +82,7 @@ class BookSearchEngine:
         self.search_total = int(total[0].firstChild.data)
         items = self.docm.getElementsByTagName("item")
         book_info = dict()  # { str: Text or None }
-        print(items)
+
         for node in items:
             book_info["title"] = node.getElementsByTagName("title")[0].firstChild
             book_info["link"] = node.getElementsByTagName("link")[0].firstChild
@@ -98,26 +98,27 @@ class BookSearchEngine:
                 if value is None:
                     book_info[key] = ""
                 else:
-                    book_info[key] = value.data
+                    book_info[key] = value.data\
+                        .replace("<b>", "").replace("</b>", "").replace("&#x0D;", "") # 불필요한 문자열 제거
 
-            book = Book(
-                title=book_info["title"].replace("<b>", "").replace("</b>", ""),
-                link=book_info["link"],
-                image=book_info["image"],
-                author=book_info["author"].replace("<b>", "").replace("</b>", ""),
-                price=book_info["price"],
-                publisher=book_info["publisher"].replace("<b>", "").replace("</b>", ""),
-                pubdate=book_info["pubdate"],
-                description=book_info["description"].replace("<b>", "").replace("</b>", "") .replace("&#x0D;", "")
-            )
-            self.books.append(book)
+            # book = Book(
+            #     title=book_info["title"].replace("<b>", "").replace("</b>", ""),
+            #     link=book_info["link"],
+            #     image=book_info["image"],
+            #     author=book_info["author"].replace("<b>", "").replace("</b>", ""),
+            #     price=book_info["price"],
+            #     publisher=book_info["publisher"].replace("<b>", "").replace("</b>", ""),
+            #     pubdate=book_info["pubdate"],
+            #     description=book_info["description"].replace("<b>", "").replace("</b>", "") .replace("&#x0D;", "")
+            # )
+            self.searched_books.append(book_info.copy())
 
         # 확인용 출력
         # for book in self.books:
         #     book.print_info()
 
     def request_search_result(self, option):
-        self.books.clear()  # 객체까지 모두 삭제되니?
+        self.searched_books.clear()  # 객체까지 모두 삭제되니?
         self.conn = http.client.HTTPSConnection("openapi.naver.com")
         self._set_search_params(option)
         # 만약 네트워크가 연결되어 있지 않으면 에러 남. 해결해야하나....ㅠ
