@@ -6,7 +6,7 @@ from bookSearchGUI import BookSearchGUI
 from LibrarySearchGUI import LibrarySearchGUI
 from RecordBookGUI import RecordBookGUI
 from editGUI import EditGUI
-
+from statisticsGUI import StatisticsGUI
 
 class MainGUI:
     window = None
@@ -40,6 +40,9 @@ class MainGUI:
 
     # Left Frame Widget
     edit_gui = None
+
+    # 통계 GUI
+    statistic_gui = None
 
     def __init__(self):
         self.window = Tk()
@@ -133,11 +136,13 @@ class MainGUI:
 
     def build_bookcase(self):
         self.record_book_gui = RecordBookGUI(self.bookcase_frame)
+        self.statistic_gui = StatisticsGUI(self.window)
         self.edit_gui.debug()
 
     def link_gui(self):
         self.book_search_gui.set_edit_gui(self.edit_gui)
-        self.edit_gui.link(book_manager=self.record_book_gui.RB_engine)
+        self.edit_gui.link(book_manager=self.record_book_gui.book_manager)
+        self.record_book_gui.set_statistics_gui(self.statistic_gui)
 
     def run(self):
         self.window.mainloop()

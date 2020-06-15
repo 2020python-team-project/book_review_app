@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import font
 from bookManager import BookManager
 from statisticsGUI import StatisticsGUI
+from recordDetailGUI import RecordDetailGUI
 
 
 class RecordBookGUI:
@@ -16,40 +17,31 @@ class RecordBookGUI:
     record_listbox = None
     record_scrollbar = None
 
-    #detail
-    back_to_list_button = None
+    # detail
+    detail_gui = None
 
-    title_label = None
-    author_label = None
-    publisher_label = None
-
-    # 통계 GUI
     statistic_gui = None
 
-    RB_engine = None
+    book_manager = None
 
     def __init__(self, frame):
         self.TempFont = font.Font(size=14, weight='bold', family='메이플스토리')
         self.small_font = font.Font(size=11, family='메이플스토리')
 
-        self.RB_engine = BookManager(self)
-        self.statistic_gui = StatisticsGUI(frame)
+        self.book_manager = BookManager(self)
 
         self.create_widget(frame)
         self.place_widget()
         self.update_record_list()
 
     def create_widget(self, frame):
-        self.detail_frame = Frame(frame, bg="white", width=420, height=335)
         self.record_frame = Frame(frame, bg="white", width=420, height=330)
 
         self.plus_button = Button(frame, text="+", width=2, height=1, font=self.TempFont,
                                   command=self.plusBook)
         self.minus_button = Button(frame, text="-", width=2, height=1, font=self.TempFont,
-                                   command=self.minusBook
-                                   )
-        self.statistic_button = Button(frame, text="주간 통계보기", width=14, height=1, font=self.TempFont,bg='plum3',
-                                       command=self.statistic_gui.show_window)
+                                   command=self.minusBook)
+        self.statistic_button = Button(frame, text="주간 통계보기", width=14, height=1, font=self.TempFont, bg='plum3')
 
         self.record_scrollbar = Scrollbar(self.record_frame)
         self.record_listbox = Listbox(self.record_frame, font=self.TempFont, width=30, height=15, activestyle="none",
@@ -57,15 +49,9 @@ class RecordBookGUI:
 
         self.record_listbox.bind("<Double-Button-1>", self.show_detail)
 
-        self.back_to_list_button = Button(self.detail_frame, font=self.TempFont, text="목록으로",
-                                          command=self.detail_frame.place_forget)
-
-        self.title_label = Label(self.detail_frame, font=self.small_font, text="제목", bg='white')
-        self.author_label = Label(self.detail_frame, font=self.small_font, text="저자", bg='white')
-        self.publisher_label = Label(self.detail_frame, font=self.small_font, text="출판사",bg='white')
+        self.detail_gui = RecordDetailGUI(frame, 250, 10)
 
     def place_widget(self):
-        # self.detail_frame.place(x=250, y=130, anchor="n")
         self.record_frame.place(x=250, y=130, anchor="n")
 
         self.plus_button.place(x=380, y=20)
@@ -75,42 +61,22 @@ class RecordBookGUI:
         self.record_listbox.pack(side="left")
         self.record_scrollbar.pack(side="right", fill='y')
 
-        self.back_to_list_button.place(x=10, y=300, anchor="w")
-
-        self.title_label.place(x=50, y=10)
-        self.author_label.place(x=50, y=40)
-        self.publisher_label.place(x=50, y=70)
-
     def update_record_list(self):
-        # if not self.checkDocument():  # DOM이 None인지 검사합니다.
-        #     return None
-        # #self.books.clear()
-        # self.booklist = self.RB_engine.BooksDoc.childNodes
-        # self.book = self.booklist[0].childNodes
-        # i=0
-        # for item in self.book:
-        #     if item.nodeName == "book":
-        #         subitems = item.childNodes  # item 들어 있는 노드들을 가져옵니다.
-        #         for atom in subitems:
-        #             if atom.nodeName in ["title",]:
-        #                 self.record_listbox.insert(i,atom.firstChild.nodeValue)  # 책 목록을 출력 합니다.
-        #                 i+=1
         self.record_listbox.delete(0, self.record_listbox.size())       # 원래 리스트 박스에 있던거 모두 삭제
-        for i, book in enumerate(self.RB_engine.books):
+        for i, book in enumerate(self.book_manager.books):
             self.record_listbox.insert(i, book.title)
 
     def show_detail(self, event):
         selected_index = self.record_listbox.curselection()
         if selected_index == ():
             return
-        selected_book = self.RB_engine.books[selected_index[0]]
+        selected_book = self.book_manager.books[selected_index[0]]
 
-        self.title_label["text"] = "제목: " + selected_book.title
-        self.author_label["text"] = "저자: " + selected_book.author
-        self.publisher_label["text"] = "출판사: " + selected_book.publisher
+        self.detail_gui.open(selected_book)
 
-        self.detail_frame.place(x=250, y=130, anchor="n")
-        self.detail_frame.tkraise()
+    def set_statistics_gui(self, gui):
+        self.statistic_gui = gui
+        self.statistic_button.configure(command=self.statistic_gui.show_window)
 
     def plusBook(self):
         print("plus!")
@@ -119,7 +85,7 @@ class RecordBookGUI:
         pass
 
     def checkDocument(self):
-        if self.RB_engine.BooksDoc == None:
+        if self.book_manager.BooksDoc == None:
             print("Error : Document is empty")
             return False
         return True

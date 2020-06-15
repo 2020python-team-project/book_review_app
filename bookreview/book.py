@@ -1,6 +1,4 @@
-# 어차피 정보만 저장하는데 딕셔너리로 하는 게 이득인가...?
 class Book:
-
     def __init__(self, title="", link="", image="", author="", price="",
                  publisher="", pubdate="",  description="",
                  comment="", date="", rating=""):
