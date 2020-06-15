@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import font
 from Library_search_engin import LibrarySearchEngine
+import folium
+import webbrowser
 
 class LibrarySearchGUI:
     setting_frame = None
@@ -71,6 +73,9 @@ class LibrarySearchGUI:
         self.back_to_list_button = Button(self.detail_frame, font=self.TempFont, text="목록으로",
                                           command=self.result_frame.tkraise)
 
+        self.map_button = Button(self.detail_frame, font=self.TempFont, text="지도보기",
+                                          command=self.show_map)
+
 
     def place_widget(self):
         # Place Widget
@@ -94,6 +99,7 @@ class LibrarySearchGUI:
         self.hompage_label.place(x=10,y=160)
 
         self.back_to_list_button.place(x=10, y=300, anchor="w")
+        self.map_button.place(x=330,y=300, anchor="w")
 
 
     def search_library(self):
@@ -109,14 +115,23 @@ class LibrarySearchGUI:
 
 
     def show_detail(self,event):
-        selected_index = self.result_listbox.curselection()
-        if selected_index == ():
+        self.selected_index = self.result_listbox.curselection()
+        if self.selected_index == ():
             return
-        selected = self.Lsrch_engine.library_list[selected_index[0]]
+        self.selected = self.Lsrch_engine.library_list[self.selected_index[0]]
 
-        self.name_label["text"]=" 『"+selected.LIBRRY_NM+"』 "
-        self.adress_label["text"]="주소: "+selected.LIBRRY_NM
-        self.openTime_label["text"]="영업시간: "+selected.READROOM_OPEN_TM_INFO
-        self.restDay_label["text"]="휴관일: "+selected.READROOM_REST_DE_INFO
-        self.hompage_label["text"]="홈페이지: "+selected.HMPG_ADDR
+        self.name_label["text"]=" 『"+self.selected.LIBRRY_NM+"』 "
+        self.adress_label["text"]="주소: "+self.selected.LIBRRY_NM
+        self.openTime_label["text"]="영업시간: "+self.selected.READROOM_OPEN_TM_INFO
+        self.restDay_label["text"]="휴관일: "+self.selected.READROOM_REST_DE_INFO
+        self.hompage_label["text"]="홈페이지: "+self.selected.HMPG_ADDR
         self.detail_frame.tkraise()
+
+    def show_map(self):
+        # 위도 경도 지정
+        map_osm = folium.Map(location=[float(self.selected.REFINE_WGS84_LAT), float(self.selected.REFINE_WGS84_LOGT)], zoom_start=15)
+        # 마커 지정
+        folium.Marker([float(self.selected.REFINE_WGS84_LAT), float(self.selected.REFINE_WGS84_LOGT)], popup='한국산업기술대').add_to(map_osm)
+        # html 파일로 저장
+        map_osm.save('osm.html')
+        webbrowser.open_new('osm.html')

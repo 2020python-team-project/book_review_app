@@ -149,4 +149,3 @@ def change_frame(frame):
 
 main = MainGUI()
 main.run()
-

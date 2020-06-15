@@ -52,6 +52,8 @@ class LibrarySearchEngine:
             library_info["REFINE_ROADNM_ADDR"] = node.getElementsByTagName("REFINE_ROADNM_ADDR")[0].firstChild
             library_info["READROOM_OPEN_TM_INFO"] = node.getElementsByTagName("READROOM_OPEN_TM_INFO")[0].firstChild
             library_info["READROOM_REST_DE_INFO"] = node.getElementsByTagName("READROOM_REST_DE_INFO")[0].firstChild
+            library_info["REFINE_WGS84_LAT"] = node.getElementsByTagName("REFINE_WGS84_LAT")[0].firstChild
+            library_info["REFINE_WGS84_LOGT"] = node.getElementsByTagName("REFINE_WGS84_LOGT")[0].firstChild
             for key, value in library_info.items():
                 if value is None:
                     library_info[key] = ""
@@ -65,7 +67,9 @@ class LibrarySearchEngine:
                 HMPG_ADDR=library_info["HMPG_ADDR"],
                 REFINE_ROADNM_ADDR=library_info["HMPG_ADDR"],
                 READROOM_OPEN_TM_INFO=library_info["REFINE_ROADNM_ADDR"],
-                READROOM_REST_DE_INFO=library_info["READROOM_REST_DE_INFO"]
+                READROOM_REST_DE_INFO=library_info["READROOM_REST_DE_INFO"],
+                REFINE_WGS84_LAT=library_info["REFINE_WGS84_LAT"],
+                REFINE_WGS84_LOGT=library_info["REFINE_WGS84_LOGT"]
             )
             self.library_list.append(library)
 
