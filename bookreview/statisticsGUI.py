@@ -3,37 +3,61 @@ from tkinter import ttk
 from tkinter import font
 
 
-# 새로운 윈도우 창보단 화면 가득 덮는 새 프래임이 나을 듯
 class StatisticsGUI:
     root = None
     window = None
 
+    title_font = None
+
+    title_label = None
+    close_button = None
+
+    graph = None
+
     def __init__(self, frame):
         self.root = frame
-        self.window = Toplevel(frame)
-        self.set_window()
+        self.frame = Frame(frame, width=1000, height=600)
 
-        self.button = Button(self.window, text="close", command=self.window.withdraw)
-        self.button.place(x=530, y=350)
+        self.set_font()
 
-    def set_window(self):
-        self.window.configure(bg="beige", bd=3, relief="ridge")
-        self.window.title("통계")
-        # self.window.overrideredirect(True)      # 윈도우창 상태표시줄 유무
-        self.window.withdraw()                  # 윈도우 안 보이게
+        self.set_widget()
+        self.place_widget()
+
+    def set_widget(self):
+        self.frame.configure(bg="beige", bd=3, relief="ridge")
+
+        self.graph = Graph(self.frame, x=500, y=100)
+        self.title_label = Label(self.frame, font=self.title_font, text="통계", bg="beige")
+        self.close_button = Button(self.frame, text="close", command=self.frame.place_forget)
+
+    def place_widget(self):
+        self.title_label.place(x=500, y=30, anchor="n")
+        self.close_button.place(x=900, y=30)
+
+    def set_font(self):
+        self.title_font = font.Font(family="메이플스토리", weight="bold", size=25)
 
     def show_window(self):
-        self.window.geometry(self.root.winfo_geometry())
-        self.window.deiconify()
+        self.frame.place(x=0, y=0)
+        self.frame.tkraise()
+
+
+class Graph:
+    canvas = None
+
+    def __init__(self, frame, x, y):
+        self.canvas = Canvas(frame, width=900, height=450, bg="white")
+        self.canvas.place(x=x, y=y, anchor="n")
 
 
 # test
 if __name__ == "__main__":
     window = Tk()
 
+    window.geometry("1000x600")
     statistics_window = StatisticsGUI(window)
 
-    button = Button(window, text="click me", command=statistics_window.window.deiconify)
+    button = Button(window, text="click me", command=statistics_window.show_window)
     button.pack()
 
     window.mainloop()
