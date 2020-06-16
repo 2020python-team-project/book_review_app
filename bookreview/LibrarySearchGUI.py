@@ -119,16 +119,17 @@ class LibrarySearchGUI:
         self.selected_index = self.result_listbox.curselection()
         if self.selected_index == ():
             return
-
+        print("e")
         self.selected = self.Lsrch_engine.library_list[self.selected_index[0]]
 
-        self.name_label["text"]=" 『"+selected.LIBRRY_NM+"』 "
-        self.adress_label["text"]="주소: "+selected.LIBRRY_NM
-        self.openTime_label["text"]="영업시간: "+selected.READROOM_OPEN_TM_INFO
-        self.restDay_label["text"]="휴관일: "+selected.READROOM_REST_DE_INFO
-        self.hompage_label["text"]="홈페이지: "+selected.HMPG_ADDR
+        self.name_label["text"]=" 『"+self.selected.LIBRRY_NM+"』 "
+        self.adress_label["text"]="주소: "+self.selected.LIBRRY_NM
+        self.openTime_label["text"]="영업시간: "+self.selected.READROOM_OPEN_TM_INFO
+        self.restDay_label["text"]="휴관일: "+self.selected.READROOM_REST_DE_INFO
+        self.hompage_label["text"]="홈페이지: "+self.selected.HMPG_ADDR
 
         self.detail_frame.place(x=250, y=130, anchor="n")
+        self.detail_frame.tkraise()
 
     def show_map(self):
         # 위도 경도 지정

@@ -7,6 +7,7 @@ from LibrarySearchGUI import LibrarySearchGUI
 from RecordBookGUI import RecordBookGUI
 from editGUI import EditGUI
 from statisticsGUI import StatisticsGUI
+from BestsellerGUI import BestsellerGUI
 
 class MainGUI:
     window = None
@@ -137,12 +138,14 @@ class MainGUI:
     def build_bookcase(self):
         self.record_book_gui = RecordBookGUI(self.bookcase_frame)
         self.statistic_gui = StatisticsGUI(self.window)
+        self.Bestseller_gui = BestsellerGUI(self.window)
         self.edit_gui.debug()
 
     def link_gui(self):
         self.book_search_gui.set_edit_gui(self.edit_gui)
         self.edit_gui.link(book_manager=self.record_book_gui.book_manager)
         self.record_book_gui.set_statistics_gui(self.statistic_gui)
+        self.record_book_gui.set_bestseller_gui(self.Bestseller_gui)
 
     def run(self):
         self.window.mainloop()

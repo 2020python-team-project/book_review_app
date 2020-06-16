@@ -4,6 +4,7 @@ from tkinter import font
 from bookManager import BookManager
 from statisticsGUI import StatisticsGUI
 from recordDetailGUI import RecordDetailGUI
+from BestsellerGUI import BestsellerGUI
 
 
 class RecordBookGUI:
@@ -13,6 +14,7 @@ class RecordBookGUI:
     plus_button = None
     minus_button = None
     statistic_button = None
+    bestseller_button=None
 
     record_listbox = None
     record_scrollbar = None
@@ -21,6 +23,7 @@ class RecordBookGUI:
     detail_gui = None
 
     statistic_gui = None
+    bestseller_gui= None
 
     book_manager = None
 
@@ -42,6 +45,7 @@ class RecordBookGUI:
         self.minus_button = Button(frame, text="-", width=2, height=1, font=self.TempFont,
                                    command=self.minusBook)
         self.statistic_button = Button(frame, text="주간 통계보기", width=14, height=1, font=self.TempFont, bg='plum3')
+        self.bestseller_button = Button(frame, text="오늘의 베스트셀러", width=14, height=1, font=self.TempFont, bg='pink')
 
         self.record_scrollbar = Scrollbar(self.record_frame)
         self.record_listbox = Listbox(self.record_frame, font=self.TempFont, width=30, height=15, activestyle="none",
@@ -57,6 +61,7 @@ class RecordBookGUI:
         self.plus_button.place(x=380, y=20)
         self.minus_button.place(x=420, y=20)
         self.statistic_button.place(x=40, y=20)
+        self.bestseller_button.place(x=40,y=70)
 
         self.record_listbox.pack(side="left")
         self.record_scrollbar.pack(side="right", fill='y')
@@ -77,6 +82,10 @@ class RecordBookGUI:
     def set_statistics_gui(self, gui):
         self.statistic_gui = gui
         self.statistic_button.configure(command=self.statistic_gui.show_window)
+
+    def set_bestseller_gui(self, gui):
+        self.Bestseller_gui = gui
+        self.bestseller_button.configure(command=self.Bestseller_gui.show_window)
 
     def plusBook(self):
         print("plus!")
