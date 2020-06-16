@@ -63,7 +63,7 @@ class LibrarySearchGUI:
 
         self.result_listbox.bind("<Double-Button-1>", self.show_detail)
 
-        #detail
+
         self.name_label=Label(self.detail_frame,font=self.big_font,bg='white')
         self.adress_label=Label(self.detail_frame,font=self.TempFont,text="주소: ",bg='white')
         self.openTime_label=Label(self.detail_frame,font=self.TempFont,text="운영시간: ",bg='white')
@@ -119,7 +119,7 @@ class LibrarySearchGUI:
         self.selected_index = self.result_listbox.curselection()
         if self.selected_index == ():
             return
-        print("e")
+
         self.selected = self.Lsrch_engine.library_list[self.selected_index[0]]
 
         self.name_label["text"]=" 『"+self.selected.LIBRRY_NM+"』 "

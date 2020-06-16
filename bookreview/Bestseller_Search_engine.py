@@ -41,7 +41,7 @@ class BestsellerSearchEngine:
             print(parseString(e.read().decode('utf-8')).toprettyxml())
         else:
             self.docm= parseString(self.resp.read().decode('utf-8'))
-            print("&"*50+self.docm.toprettyxml())
+            #print("&"*50+self.docm.toprettyxml())
 
         items = self.docm.getElementsByTagName("item")
         book_info = dict()
@@ -64,7 +64,7 @@ class BestsellerSearchEngine:
                     book_info[key] = value.data \
                         .replace("<b>", "").replace("</b>", "").replace("&#x0D;", "")  # 불필요한 문자열 제거
 
-        self.searched_books.append(book_info.copy())
+            self.searched_books.append(book_info.copy())
 
 
 
