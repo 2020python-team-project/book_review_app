@@ -85,7 +85,7 @@ def check(user):
     for b in BS_engine.searched_books:
       d=""
       for i in data[1]:
-        d+=i.replace("[","").replace("]","")
+        d+=i.replace("[","").replace("]","") #숫자만 뜨게 변경
       if str(b["isbn"]) == str(d):
         msg += "제목: " + b["title"] + "\n" + "isbn: " + b["isbn"] + "\n"
 
