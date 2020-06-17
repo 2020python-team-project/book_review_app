@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import http.client
 from urllib import parse
-from book import Book
 from xml.dom import minidom
 
 

@@ -1,10 +1,5 @@
-# -*- coding:utf-8 -*-
-from urllib import parse
-from book import Book
-from xml.dom.minidom import parse, parseString
-from xml.etree import ElementTree
 import pickle
-from copy import *
+from copy import copy
 
 
 class BookManager:

@@ -2,7 +2,6 @@
 from tkinter import *
 from tkinter import font
 from bookManager import BookManager
-from statisticsGUI import StatisticsGUI
 from recordDetailGUI import RecordDetailGUI
 from BestsellerGUI import BestsellerGUI
 
@@ -23,7 +22,7 @@ class RecordBookGUI:
     detail_gui = None
 
     statistic_gui = None
-    bestseller_gui= None
+    bestseller_gui = None
 
     book_manager = None
 

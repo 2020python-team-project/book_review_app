@@ -3,7 +3,6 @@ from tkinter import ttk
 from tkinter import font
 from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
-from bookManager import BookManager
 
 TEXT_START = 1.0
 TEXT_END = END
@@ -62,7 +61,6 @@ class BookSearchGUI:
 
         # data
         self.bsch_engine = BookSearchEngine()
-        # self.RB_engine = BookManager()
 
     def create_widget(self, frame):
         self.setting_frame = Frame(frame, bg="white", width=420, height=100)
@@ -97,7 +95,8 @@ class BookSearchGUI:
         self.publisher_label = Label(self.detail_frame, font=self.detail_font, text="출판사", bg='white')
         self.pubdate_label = Label(self.detail_frame, font=self.detail_font, text="출판일", bg='white')
         self.price_label = Label(self.detail_frame, font=self.detail_font, text="가격", bg='white')
-        self.description_text = Text(self.detail_frame, font=self.detail_font, bg='white', width=40, height=6, relief="solid")
+        self.description_text = Text(self.detail_frame, font=self.detail_font, bg='white',
+                                     width=40, height=6, cursor="arrow", bd=0)
         self.link_label = Label(self.detail_frame, font=self.detail_font, text="링크", bg='white')
 
         self.back_to_list_button = Button(self.detail_frame, font=self.default_font, text="목록으로",
@@ -181,32 +180,3 @@ class BookSearchGUI:
         if self.edit_gui is not None:
             self.edit_gui.start_edit(self.selected_book, self.url_image.get_image())
         self.detail_frame.place_forget()
-
-    def save_book(self):
-        # # 엘리먼트를 만듭니다.
-        # newBook = self.RB_engine.BooksDoc.createElement('book')
-        # titleEle = self.RB_engine.BooksDoc.createElement('title')
-        # titleNode = self.RB_engine.BooksDoc.createTextNode(self.selected_book.title)
-        #
-        # # 텍스트 노드와 Title 엘리먼트를 연결 시킵니다.
-        # try:
-        #     titleEle.appendChild(titleNode)
-        # except Exception:
-        #     print("append child fail- please,check the parent element & node!!!")
-        #     return None
-        # else:
-        #     titleEle.appendChild(titleNode)
-        #
-        # # Title을 book 엘리먼트와 연결 시킵니다.
-        # try:
-        #     newBook.appendChild(titleEle)
-        #     booklist = self.RB_engine.BooksDoc.firstChild
-        # except Exception:
-        #     print("append child fail- please,check the parent element & node!!!")
-        #     return None
-        # else:
-        #     if booklist != None:
-        #         booklist.appendChild(newBook)
-        #         print(booklist.toprettyxml())
-        #         # 앨리먼트와 텍스트 추가는 했고.. record 창 갱신은 어떻게?
-        pass

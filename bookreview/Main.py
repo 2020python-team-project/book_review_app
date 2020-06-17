@@ -1,13 +1,13 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter import font
-import tkinter.messagebox
 from bookSearchGUI import BookSearchGUI
 from LibrarySearchGUI import LibrarySearchGUI
 from RecordBookGUI import RecordBookGUI
 from editGUI import EditGUI
 from statisticsGUI import StatisticsGUI
 from BestsellerGUI import BestsellerGUI
+import rating_image
+
 
 class MainGUI:
     window = None
@@ -49,6 +49,8 @@ class MainGUI:
         self.window = Tk()
 
         self.set_font()
+        rating_image.load_image()
+
         self.set_window()
         self.build_main_frame()
 
