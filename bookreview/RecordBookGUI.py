@@ -1,7 +1,6 @@
 # -*- coding: cp949 -*-
 from tkinter import *
 from tkinter import font
-from bookManager import BookManager
 from recordDetailGUI import RecordDetailGUI
 from BestsellerGUI import BestsellerGUI
 
@@ -26,11 +25,11 @@ class RecordBookGUI:
 
     book_manager = None
 
-    def __init__(self, frame):
+    def __init__(self, frame, book_manager):
         self.TempFont = font.Font(size=14, weight='bold', family='메이플스토리')
         self.small_font = font.Font(size=11, family='메이플스토리')
 
-        self.book_manager = BookManager(self)
+        self.book_manager = book_manager
 
         self.create_widget(frame)
         self.place_widget()

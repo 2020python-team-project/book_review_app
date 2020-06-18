@@ -7,9 +7,11 @@ class BookManager:
     ui = None
     books = []
 
-    def __init__(self, ui):
-        self.ui = ui
+    def __init__(self):
         self.load_from_file()
+
+    def set_record_ui(self, ui):
+        self.ui = ui
 
     def add_book(self, book):
         self.books.append(copy(book))

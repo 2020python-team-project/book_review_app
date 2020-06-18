@@ -11,6 +11,7 @@ class RecordDetailGUI:
     frame = None
     position = ()
     default_font = None
+    title_font = None
     text_font = None
     date_font = None
 
@@ -43,13 +44,14 @@ class RecordDetailGUI:
         self.place_widget()
 
     def set_font(self):
-        self.default_font = font.Font(family="메이플스토리", weight="bold", size=14)
+        self.default_font = font.Font(family="메이플스토리", weight="bold", size=12)
+        self.title_font = font.Font(family="메이플스토리", weight="bold", size=14)
         self.text_font = font.Font(family="메이플스토리", weight="bold", size=13)
         self.date_font = font.Font(family="메이플스토리", weight="bold", size=16)
 
     def set_widget(self):
         self.image_label = Label(self.frame, bg="white", bd=1, relief="solid")
-        self.title_label = Label(self.frame, bg="white", font=self.default_font)
+        self.title_label = Label(self.frame, bg="white", font=self.title_font, anchor="w", justify="left", wraplength=300)
         self.author_label = Label(self.frame, bg="white", font=self.default_font)
         self.publisher_label = Label(self.frame, bg="white", font=self.default_font)
         self.pubdate_label = Label(self.frame, bg="white", font=self.default_font)
@@ -72,10 +74,10 @@ class RecordDetailGUI:
         self.image_label.place(x=10, y=15)
 
         self.title_label.place(x=120, y=15)
-        self.author_label.place(x=120, y=40)
-        self.publisher_label.place(x=120, y=65)
-        self.pubdate_label.place(x=120, y=90)
-        self.price_label.place(x=120, y=115)
+        self.author_label.place(x=120, y=60)
+        self.publisher_label.place(x=120, y=80)
+        self.pubdate_label.place(x=120, y=100)
+        self.price_label.place(x=120, y=120)
 
         self.date_label.place(x=10, y=170)
         self.rating_label.place(x=250, y=150)

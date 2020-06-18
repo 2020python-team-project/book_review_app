@@ -7,7 +7,7 @@ from editGUI import EditGUI
 from statisticsGUI import StatisticsGUI
 from BestsellerGUI import BestsellerGUI
 import rating_image
-
+from bookManager import BookManager
 
 class MainGUI:
     window = None
@@ -45,11 +45,15 @@ class MainGUI:
     # 통계 GUI
     statistic_gui = None
 
+    book_manager = None
+
     def __init__(self):
         self.window = Tk()
 
         self.set_font()
         rating_image.load_image()
+
+        self.book_manager = BookManager()
 
         self.set_window()
         self.build_main_frame()
@@ -62,6 +66,8 @@ class MainGUI:
         self.build_bookcase()
 
         self.link_gui()
+
+
 
         change_frame(self.book_frame)
 
@@ -138,8 +144,8 @@ class MainGUI:
         self.library_search_gui = LibrarySearchGUI(self.library_frame)
 
     def build_bookcase(self):
-        self.record_book_gui = RecordBookGUI(self.bookcase_frame)
-        self.statistic_gui = StatisticsGUI(self.window)
+        self.record_book_gui = RecordBookGUI(self.bookcase_frame, self.book_manager)
+        self.statistic_gui = StatisticsGUI(self.window, self.book_manager)
         self.Bestseller_gui = BestsellerGUI(self.window)
         self.edit_gui.debug()
 
@@ -148,6 +154,7 @@ class MainGUI:
         self.edit_gui.link(book_manager=self.record_book_gui.book_manager)
         self.record_book_gui.set_statistics_gui(self.statistic_gui)
         self.record_book_gui.set_bestseller_gui(self.Bestseller_gui)
+        self.book_manager.set_record_ui(self.record_book_gui)
 
     def run(self):
         self.window.mainloop()
