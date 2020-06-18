@@ -68,7 +68,6 @@ class MainGUI:
         self.link_gui()
 
 
-
         change_frame(self.book_frame)
 
     def set_font(self):
@@ -103,7 +102,7 @@ class MainGUI:
         # self.hud_frame.configure(bd=1, relief="solid")
         # self.image_frame.configure(bd=1, relief="solid")
         # self.book_frame.configure(bd=1, relief="solid")
-        # self.library_frame.configure(bd=1, relief="solid")
+        #self.library_frame.configure(bd=1, relief="solid")
         # self.bookcase_frame.configure(bd=1, relief="solid")
 
     def build_image(self):
@@ -128,7 +127,7 @@ class MainGUI:
         self.title_label = Label(self.hud_frame, font=self.title_font, text="♥ 나만의 독서기록장 ♥", bg="beige")
         self.search_book_button = Button(self.hud_frame, text="책 검색", width=8, height=1, font=self.button_font, bg='DarkOliveGreen3',
                                          command=lambda: change_frame(self.book_frame))
-        self.search_library_button = Button(self.hud_frame, text="도서관 찾기", width=8, height=1, font=self.button_font, bg='DarkOliveGreen3',
+        self.search_library_button = Button(self.hud_frame, text="도서관 찾기", width=8, height=1, font=self.button_font, bg='LightSkyBlue',
                                             command=lambda: change_frame(self.library_frame))
 
         # Place
@@ -160,8 +159,10 @@ class MainGUI:
         self.window.mainloop()
 
 
+
 def change_frame(frame):
     frame.tkraise()
+
 
 
 main = MainGUI()

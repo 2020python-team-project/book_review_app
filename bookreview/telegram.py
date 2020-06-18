@@ -48,7 +48,7 @@ def handle(msg):
 def replyAptData(user):
   BS_engine=BestsellerSearchEngine
 
-  msg = "******"+current_month+"주차 베스트셀러"+"******\n"
+  msg = "******"+current_month+"오늘의 베스트셀러"+"******\n"
 
   for b in BS_engine.searched_books:
     print(str(datetime.now()).split('.')[0], b)
@@ -87,11 +87,10 @@ def check(user):
       for i in data[1]:
         d+=i.replace("[","").replace("]","") #숫자만 뜨게 변경
       if str(b["isbn"]) == str(d):
-        msg += "제목: " + b["title"] + "\n" + "isbn: " + b["isbn"] + "\n"
+        msg += "isbn: " + b["isbn"] +"\n"+"제목: " + b["title"] + "\n" + "저자: "+ b["author"]\
+               +"\n" + "출판사: "+ b["publisher"]+"\n"+"-------------------------------"+"\n"
 
   sendMessage(user, msg)
-
-
 
 
 bot=telepot.Bot(TOKEN)
