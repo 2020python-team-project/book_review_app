@@ -9,7 +9,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 import urllib.request
 from xml.dom.minidom import getDOMImplementation
-from urlImage import UrlImage
+from datetime import date, datetime, timedelta
 
 
 class RecordBookGUI:
@@ -99,9 +99,8 @@ class RecordBookGUI:
         senderAddr = "ghdtmdgp12@gmail.com"  # 보내는 사람 email 주소.
         recipientAddr = urllib.parse.quote(self.email_entry.get()).replace("%40","@")    # 받는 사람 email 주소.
 
-
         msg = MIMEBase("multipart", "alternative")
-        msg['Subject'] = "Test email in Python 3.0"
+        msg['Subject'] = "["+str(date.today())+"] 현재까지 읽은 책 목록 ♨"
         msg['From'] = senderAddr
         msg['To'] = recipientAddr
 
@@ -134,26 +133,32 @@ class RecordBookGUI:
 
         for i,bookitem in enumerate(self.book_manager.books):
             b = newdoc.createElement('b')  # Bold 엘리먼트 생성
-            titleText = newdoc.createTextNode("Title:" + bookitem.title)  # 텍스트 노드 생성
+            titleText = newdoc.createTextNode("제목:" + bookitem.title)  # 텍스트 노드 생성
             b.appendChild(titleText)
-            body.appendChild(b)
+
             br = newdoc.createElement('br')  # <br> 부분을 생성
             body.appendChild(br)
 
-            p = newdoc.createElement('p')  # title 부분을 생성
-            authorText = newdoc.createTextNode("Author:" + bookitem.author)  # 텍스트 노드 생성
-            p.appendChild(authorText)
+            a = newdoc.createElement('a')
+            authorText = newdoc.createTextNode("->저자:" + bookitem.author)
+            a.appendChild(authorText)
+
+            p = newdoc.createElement('p')
+            publisherText = newdoc.createTextNode("출판사:" + bookitem.publisher)
+            p.appendChild(publisherText)
 
             #이미지가 안띄워짐 ㅠㅠ
             # image = newdoc.createTextNode(bookitem.image)  # 텍스트 노드 생성
             # img = newdoc.createElement('img src='+str(image))  # title 부분을 생성
 
             #body.appendChild(img)
+            body.appendChild(b)
+            body.appendChild(a)
             body.appendChild(p)
-            body.appendChild(br)  # <br> 부분을 부모 엘리먼트에 추가
-
+            body.appendChild(br)
 
         top_element.appendChild(body)  # Body 엘리먼트를 최상위 엘리먼트에 추가
+        print(newdoc.toxml())
         return newdoc.toxml()
 
     def checkDocument(self):

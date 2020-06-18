@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import font
 from Bestseller_Search_engine import  BestsellerSearchEngine
 from urlImage import UrlImage
+from datetime import date, datetime, timedelta
 
 
 TEXT_START = 1.0
@@ -32,7 +33,7 @@ class BestsellerGUI:
         self.frame.configure(bg="beige", bd=3, relief="ridge")
 
         self.bsbooks = BSbooks(self.frame, x=500, y=100)
-        self.title_label = Label(self.frame, font=self.title_font, text="★ BEST SELLER ★", bg="beige")
+        self.title_label = Label(self.frame, font=self.title_font, text="★ "+str(date.today()) + " 오늘의 BEST SELLER ★", bg="beige")
         self.close_button = Button(self.frame, text="close", command=self.frame.place_forget)
 
     def place_widget(self):
