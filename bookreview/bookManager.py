@@ -9,12 +9,15 @@ class BookManager:
 
     def __init__(self):
         self.load_from_file()
+        self.books = sorted(self.books, key=lambda bk: bk.edit_date, reverse=True)
 
     def set_record_ui(self, ui):
         self.ui = ui
 
     def add_book(self, book):
         self.books.append(copy(book))
+        self.books = sorted(self.books, key=lambda bk: bk.edit_date, reverse=True)
+
         self.ui.update_record_list()
 
         with open(self.file_name, "ab") as f:

@@ -9,6 +9,7 @@ from BestsellerGUI import BestsellerGUI
 import rating_image
 from bookManager import BookManager
 
+
 class MainGUI:
     window = None
     button_font = None

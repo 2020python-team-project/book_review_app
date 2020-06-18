@@ -31,7 +31,7 @@ class StatisticsGUI:
 
         self.graph = Graph(self.frame, x=500, y=100, book_manager=self.book_manager)
         self.title_label = Label(self.frame, font=self.title_font, text="통계", bg="beige")
-        self.close_button = Button(self.frame, font=self.button_font, text="닫기", command=self.frame.place_forget)
+        self.close_button = Button(self.frame, font=self.button_font, text="닫기", command=self.close)
 
     def place_widget(self):
         self.title_label.place(x=500, y=30, anchor="n")
@@ -46,6 +46,10 @@ class StatisticsGUI:
 
         self.frame.place(x=0, y=0)
         self.frame.tkraise()
+
+    def close(self):
+        self.graph.clear()
+        self.frame.place_forget()
 
 
 class Period:
@@ -70,8 +74,8 @@ class Graph:
 
     period = None
 
-    total_date = dict()     # [ str(년월) : int(키에 해당하는 책 개수) ], 저장되어 있는 모든 책을 기간별로 분류한다.
-    graph_data = dict()     # [ str(현재 보여지는 월) : int(키에 해당하는 책 개수) ], 현재 보여지는 월별로 책을 분류한다.
+    total_date = dict()     # [ str(YYYYMM) : int(키에 해당하는 책 개수) ], 저장되어 있는 모든 책을 기간별로 분류한다.
+    graph_data = dict()     # [ str(MM) : int(키에 해당하는 책 개수) ], 현재 보여지는 월별로 책을 분류한다.
 
     graph_xpos = {
         "01": 100,
@@ -87,6 +91,8 @@ class Graph:
         "06": 600,
         "12": 600,
     }
+
+    book_ids = []
 
     def __init__(self, frame, x, y, book_manager):
         self.canvas = Canvas(frame, width=900, height=450, bg="white")
@@ -144,25 +150,38 @@ class Graph:
         print(self.graph_data)
 
     def draw_graph(self):
+        self.book_ids.clear()
         for month, count in self.graph_data.items():
-            for i in range(count):
-                self.canvas.create_image(self.graph_xpos[month], 340-i*70, image=self.image)
+            books = self.get_book_list(month)
 
+            for i in range(count):
+                self.book_ids.append(
+                    self.canvas.create_image(self.graph_xpos[month], 340-i*70, image=self.image,
+                                             tag=books[i].title.replace(" ", "")))
+
+        for book_id in self.book_ids:
+            print(self.canvas.gettags(book_id))
+            self.canvas.tag_bind(book_id, "<Enter>", lambda event, b_id=book_id: self.show_book_info(b_id))
+
+    def show_book_info(self, obj_id):
+        print(self.canvas.gettags(obj_id))
+
+    def get_book_list(self, month):
+        cur_date = self.period.year + month
+        book_list = []
+        for book in self.book_manager.books:
+            if book.edit_date[:6] == cur_date:
+                book_list.append(book)
+
+        return book_list
+
+    def clear(self):
+        self.canvas.delete(ALL)
 
     def debug(self):
         for i in range(9):
             self.canvas.create_line(i*100, 0, i*100, 450)
 
 
-# test
 if __name__ == "__main__":
-    # window = Tk()
-    #
-    # window.geometry("1000x600")
-    # statistics_window = StatisticsGUI(window)
-    #
-    # button = Button(window, text="click me", command=statistics_window.show_window)
-    # button.pack()
-    #
-    # window.mainloop()
     pass
