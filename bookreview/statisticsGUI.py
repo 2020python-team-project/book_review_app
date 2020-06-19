@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import font
-
+from urlImage import UrlImage
 
 class StatisticsGUI:
     root = None
@@ -42,10 +42,10 @@ class StatisticsGUI:
         self.button_font = font.Font(family="메이플스토리", weight="bold", size=14)
 
     def show_window(self):
-        self.graph.build_graph()
-
         self.frame.place(x=0, y=0)
         self.frame.tkraise()
+
+        self.graph.build_graph()
 
     def close(self):
         self.graph.clear()
@@ -70,6 +70,7 @@ class Graph:
     canvas = None
     image = None
     default_font = None
+    info_font = None
     book_manager = None
 
     period = None
@@ -92,29 +93,36 @@ class Graph:
         "12": 600,
     }
 
-    book_ids = []
+    id_to_book = dict()
+
+    cover_image = None
+    info_rect_id = None
+    cover_image_id = None
+    title_text_id = None
+    date_text_id = None
 
     def __init__(self, frame, x, y, book_manager):
         self.canvas = Canvas(frame, width=900, height=450, bg="white")
         self.default_font = font.Font(family="메이플스토리", weight="bold", size=14)
+        self.info_font = font.Font(family="메이플스토리", weight="bold", size=12)
         self.image = PhotoImage(file="Resource/Image/book_stock.PNG")
 
         self.book_manager = book_manager
 
-        self.debug()
+        self.period = Period("2020", "상반기")
+        self.create_period_object(self.period)
+        self.create_info_object()
+        # self.debug()
 
         self.canvas.place(x=x, y=y, anchor="n")
 
     def build_graph(self):
-        self.period = Period("2020", "상반기")
-        self.set_widget_period(self.period)
-
         self.set_total_date()
         self.set_graph_data()
 
         self.draw_graph()
 
-    def set_widget_period(self, period):
+    def create_period_object(self, period):
         self.canvas.create_text(350, 30, font=self.default_font, text=f"{period.year}년 {period.half}")
 
         for i, month in enumerate(period.get_month_range()):
@@ -150,21 +158,39 @@ class Graph:
         print(self.graph_data)
 
     def draw_graph(self):
-        self.book_ids.clear()
+        self.id_to_book.clear()
         for month, count in self.graph_data.items():
             books = self.get_book_list(month)
 
             for i in range(count):
-                self.book_ids.append(
-                    self.canvas.create_image(self.graph_xpos[month], 340-i*70, image=self.image,
-                                             tag=books[i].title.replace(" ", "")))
+                item = self.canvas.create_image(self.graph_xpos[month], 340 - i * 70, image=self.image)
+                self.id_to_book[item] = books[i]
+                self.canvas.after(300)
+                self.canvas.update()
 
-        for book_id in self.book_ids:
-            print(self.canvas.gettags(book_id))
-            self.canvas.tag_bind(book_id, "<Enter>", lambda event, b_id=book_id: self.show_book_info(b_id))
+        for book_id in self.id_to_book.keys():
+            self.canvas.tag_bind(book_id, "<Enter>", lambda event, b_id=book_id: self.show_info(b_id))
+            self.canvas.tag_bind(book_id, "<Leave>", lambda event, b_id=book_id: self.close_info(b_id))
 
-    def show_book_info(self, obj_id):
-        print(self.canvas.gettags(obj_id))
+    def show_info(self, obj_id):
+        self.cover_image = UrlImage(self.id_to_book[obj_id].image).get_image()
+
+        self.canvas.itemconfigure(self.info_rect_id, state="normal")
+        self.canvas.itemconfigure(self.cover_image_id, state="normal", image=self.cover_image)
+        self.canvas.itemconfigure(self.title_text_id, state="normal", text=self.id_to_book[obj_id].title)
+        self.canvas.itemconfigure(self.date_text_id, state="normal", text=self.id_to_book[obj_id].edit_date)
+
+    def close_info(self, obj_id):
+        self.canvas.itemconfigure(self.info_rect_id, state="hidden")
+        self.canvas.itemconfigure(self.cover_image_id, state="hidden")
+        self.canvas.itemconfigure(self.title_text_id, state="hidden")
+        self.canvas.itemconfigure(self.date_text_id, state="hidden")
+
+    def create_info_object(self):
+        self.info_rect_id = self.canvas.create_rectangle(700, 50, 850, 400, state="hidden")
+        self.cover_image_id = self.canvas.create_image(775, 130, state="hidden")
+        self.title_text_id = self.canvas.create_text(775, 250, font=self.info_font, state="hidden", width=150)
+        self.date_text_id = self.canvas.create_text(775, 350, font=self.info_font, state="hidden")
 
     def get_book_list(self, month):
         cur_date = self.period.year + month
