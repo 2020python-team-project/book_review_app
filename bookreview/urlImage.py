@@ -10,11 +10,9 @@ class UrlImage:
 
     def __init__(self, url):
         req = urllib.request.Request(url)
-
         try:
             with urllib.request.urlopen(req) as u:
                 self.image = ImageTk.PhotoImage(Image.open(BytesIO(u.read())))
-
         except urllib.error.URLError as e:
             self.image = ImageTk.PhotoImage(file="Resource/Image/NoImage.png")
             print(e.reason)

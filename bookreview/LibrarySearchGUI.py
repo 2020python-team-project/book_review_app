@@ -3,6 +3,7 @@ from tkinter import font
 from Library_search_engin import LibrarySearchEngine
 import folium
 import webbrowser
+from urlImage import UrlImage
 
 class LibrarySearchGUI:
     setting_frame = None
@@ -45,10 +46,10 @@ class LibrarySearchGUI:
         self.setting_frame = Frame(frame, bg="white", width=420, height=100)
         self.detail_frame = Frame(frame, bg="white", width=420, height=335)
         self.result_frame = Frame(frame, bg="white", width=420, height=330)
-
+        #self.map_frame=Frame(frame, bg="white", width=420, height=335)
         self.citykeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont, width=15)
         self.dongkeyword_entry = Entry(self.setting_frame, relief="solid", font=self.TempFont, width=15)
-        self.library_search_button = Button(self.setting_frame, text="검색", font=self.TempFont, bg='indian red',
+        self.library_search_button = Button(self.setting_frame, text="검색", font=self.TempFont, bg='Khaki',
                                             command=self.search_library, width=4, height=2)
         self.citykeyword_entry.bind("<Return>", self.search_library)
         self.dongkeyword_entry.bind("<Return>", self.search_library)
@@ -75,6 +76,7 @@ class LibrarySearchGUI:
 
         self.map_button = Button(self.detail_frame, font=self.TempFont, text="지도보기",
                                           command=self.show_map)
+        #self.map_image_label = Label(self.map_frame, bg="white", bd=1, relief="solid")
 
 
     def place_widget(self):
@@ -99,6 +101,7 @@ class LibrarySearchGUI:
 
         self.back_to_list_button.place(x=10, y=300, anchor="w")
         self.map_button.place(x=330,y=300, anchor="w")
+        #self.map_image_label.place(x=10, y=10)
 
 
     def search_library(self, event=None):
@@ -132,10 +135,17 @@ class LibrarySearchGUI:
         self.detail_frame.tkraise()
 
     def show_map(self):
-        # 위도 경도 지정
-        map_osm = folium.Map(location=[float(self.selected.REFINE_WGS84_LAT), float(self.selected.REFINE_WGS84_LOGT)], zoom_start=15)
+        #self.map_frame.place(x=250, y=130, anchor="n")
+        #self.map_frame.tkraise()
+        #위도 경도 지정
+        #map_osm = folium.Map(location=[float(self.selected.REFINE_WGS84_LAT), float(self.selected.REFINE_WGS84_LOGT)], zoom_start=15)
+        map_osm = folium.Map(location=[float(self.selected.REFINE_WGS84_LAT), float(self.selected.REFINE_WGS84_LOGT)],
+                            zoom_start=15)
+
         # 마커 지정
-        folium.Marker([float(self.selected.REFINE_WGS84_LAT), float(self.selected.REFINE_WGS84_LOGT)], popup='한국산업기술대').add_to(map_osm)
+        folium.Marker([float(self.selected.REFINE_WGS84_LAT), float(self.selected.REFINE_WGS84_LOGT)],
+                      popup=(self.selected.LIBRRY_NM),icon=folium.Icon(color='red')).add_to(map_osm)
         # html 파일로 저장
-        map_osm.save('osm.html')
-        webbrowser.open_new('osm.html')
+        htmlFile='osm.html'
+        map_osm.save(htmlFile)
+        webbrowser.open_new(htmlFile)
