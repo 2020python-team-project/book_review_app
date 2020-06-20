@@ -163,10 +163,12 @@ class Graph:
             books = self.get_book_list(month)
 
             for i in range(count):
-                item = self.canvas.create_image(self.graph_xpos[month], 340 - i * 70, image=self.image)
+                item = self.canvas.create_image(self.graph_xpos[month], 340 - i * 70, image=self.image,
+                                                tag="book_stock")
                 self.id_to_book[item] = books[i]
                 self.canvas.after(300)
                 self.canvas.update()
+                # 여기 효과음 넣으면 괜찮을 듯
 
         for book_id in self.id_to_book.keys():
             self.canvas.tag_bind(book_id, "<Enter>", lambda event, b_id=book_id: self.show_info(b_id))
@@ -202,7 +204,7 @@ class Graph:
         return book_list
 
     def clear(self):
-        self.canvas.delete(ALL)
+        self.canvas.delete("book_stock")
 
     def debug(self):
         for i in range(9):
