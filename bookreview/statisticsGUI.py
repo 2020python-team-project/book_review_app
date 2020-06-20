@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import font
 from urlImage import UrlImage
+from Cmodule.dateString import *
 
 class StatisticsGUI:
     root = None
@@ -180,7 +181,8 @@ class Graph:
         self.canvas.itemconfigure(self.info_rect_id, state="normal")
         self.canvas.itemconfigure(self.cover_image_id, state="normal", image=self.cover_image)
         self.canvas.itemconfigure(self.title_text_id, state="normal", text=self.id_to_book[obj_id].title)
-        self.canvas.itemconfigure(self.date_text_id, state="normal", text=self.id_to_book[obj_id].edit_date)
+        self.canvas.itemconfigure(self.date_text_id, state="normal",
+                                  text=get_dot_format(self.id_to_book[obj_id].edit_date))
 
     def close_info(self, obj_id):
         self.canvas.itemconfigure(self.info_rect_id, state="hidden")
@@ -191,7 +193,7 @@ class Graph:
     def create_info_object(self):
         self.info_rect_id = self.canvas.create_rectangle(700, 50, 850, 400, state="hidden")
         self.cover_image_id = self.canvas.create_image(775, 130, state="hidden")
-        self.title_text_id = self.canvas.create_text(775, 250, font=self.info_font, state="hidden", width=150)
+        self.title_text_id = self.canvas.create_text(775, 250, font=self.info_font, state="hidden", width=140)
         self.date_text_id = self.canvas.create_text(775, 350, font=self.info_font, state="hidden")
 
     def get_book_list(self, month):

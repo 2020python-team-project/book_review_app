@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font
 from urlImage import UrlImage
 import rating_image
+from Cmodule.dateString import *
 
 TEXT_START = 1.0
 TEXT_END = END
@@ -99,8 +100,9 @@ class RecordDetailGUI:
         self.price_label.configure(text=f"가격: {book.price}")
 
         self.rating_label.configure(image=rating_image.get_rating_image(book.rating))
-        date_str = book.edit_date[:4] + '.' + book.edit_date[4:6] + '.' + book.edit_date[6:]
-        self.date_label.configure(text=date_str)
+
+        # date_str = book.edit_date[:4] + '.' + book.edit_date[4:6] + '.' + book.edit_date[6:]
+        self.date_label.configure(text=get_dot_format(book.edit_date))
 
         self.comment_text.configure(state="normal")
         self.comment_text.delete(TEXT_START, TEXT_END)
