@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import font
 from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
+from Cmodule.dateString import *
 import Sounds
 
 TEXT_START = 1.0
@@ -56,6 +57,7 @@ class BookSearchGUI:
     def __init__(self, frame):
         self.default_font = font.Font(size=14, weight='bold', family='메이플스토리')
         self.detail_font = font.Font(family='메이플스토리', weight="bold", size=11)
+        self.title_font = font.Font(family='메이플스토리', weight="bold", size=12)
 
         self.create_widget(frame)
         self.place_widget()
@@ -91,7 +93,8 @@ class BookSearchGUI:
         self.result_scrollbar["command"] = self.result_listbox.yview
 
         self.image_label = Label(self.detail_frame, bg="white", bd=1, relief="solid")
-        self.title_label = Label(self.detail_frame, font=self.detail_font, text="제목", bg='white')
+        self.title_label = Label(self.detail_frame, bg="white", font=self.title_font, anchor="w",
+                                 justify="left", wraplength=300)
         self.author_label = Label(self.detail_frame, font=self.detail_font, text="저자", bg='white')
         self.publisher_label = Label(self.detail_frame, font=self.detail_font, text="출판사", bg='white')
         self.pubdate_label = Label(self.detail_frame, font=self.detail_font, text="출판일", bg='white')
@@ -120,11 +123,11 @@ class BookSearchGUI:
         self.result_scrollbar.pack(side="right", fill='y')
 
         self.image_label.place(x=10, y=10)
-        self.title_label.place(x=120, y=10)
-        self.author_label.place(x=120, y=35)
-        self.publisher_label.place(x=120, y=60)
-        self.pubdate_label.place(x=120, y=85)
-        self.price_label.place(x=120, y=110)
+        self.title_label.place(x=110, y=10)
+        self.author_label.place(x=110, y=50)
+        self.publisher_label.place(x=110, y=70)
+        self.pubdate_label.place(x=110, y=90)
+        self.price_label.place(x=110, y=110)
         self.description_text.place(x=210, y=150, anchor="n")
         # self.link_label.place(x=10, y=250) 버튼을 만들어서 웹이랑 연결하자
 
@@ -160,10 +163,10 @@ class BookSearchGUI:
         self.url_image = UrlImage(self.selected_book["image"])
 
         self.image_label.configure(image=self.url_image.get_image())
-        self.title_label.configure(text=f"제목: {self.selected_book['title']}")
+        self.title_label.configure(text=self.selected_book['title'])
         self.author_label.configure(text=f"저자: {self.selected_book['author']}")
         self.publisher_label.configure(text=f"출판사: {self.selected_book['publisher']}")
-        self.pubdate_label.configure(text=f"출판일: {self.selected_book['pubdate']}")
+        self.pubdate_label.configure(text=f"출판일: {get_dot_format(self.selected_book['pubdate'])}")
         self.price_label.configure(text=f"가격: {self.selected_book['price']}")
 
         self.description_text.configure(state="normal")

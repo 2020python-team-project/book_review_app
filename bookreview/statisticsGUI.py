@@ -168,7 +168,7 @@ class Graph:
                 item = self.canvas.create_image(self.graph_xpos[month], 340 - i * 70, image=self.image,
                                                 tag="book_stock")
                 self.id_to_book[item] = books[i]
-                self.canvas.after(300)
+                # self.canvas.after(100)
                 self.canvas.update()
                 Sounds.뽁()
 

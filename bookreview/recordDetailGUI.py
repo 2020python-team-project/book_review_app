@@ -35,8 +35,11 @@ class RecordDetailGUI:
     comment_scrollbar = None
 
     edit_image = None
+    save_image = None
     remove_image = None
+
     edit_button = None
+    save_button = None
     remove_button = None
     back_button = None
 
@@ -71,19 +74,21 @@ class RecordDetailGUI:
         self.rating_label = Label(self.frame, bg="white")
 
         self.comment_frame = Frame(self.frame)
-        self.comment_text = Text(self.comment_frame, font=self.text_font, width=34, height=8, relief="solid",
+        self.comment_text = Text(self.comment_frame, font=self.text_font, width=34, height=9, relief="solid",
                                  cursor="arrow")
         self.comment_scrollbar = Scrollbar(self.comment_frame)
         self.comment_text["yscrollcommand"] = self.comment_scrollbar.set
         self.comment_scrollbar["command"] = self.comment_text.yview
 
-
         self.edit_image = PhotoImage(file="Resource/Image/edit.png")
-        self.edit_button = Button(self.frame, image=self.edit_image)
+        self.save_image = PhotoImage(file="Resource/Image/save.png")
         self.remove_image = PhotoImage(file="Resource/Image/remove.png")
+
+        self.edit_button = Button(self.frame, image=self.edit_image, bg="white", command=self.change_edit_mode)
+        self.save_button = Button(self.frame, image=self.save_image, bg="white", command=self.save)
         self.remove_button = Button(self.frame, image=self.remove_image, command=self.show_remove_message)
         self.back_button = Button(self.frame, text="닫기", font=self.default_font,
-                                  command=self.frame.place_forget)
+                                  command=self.close)
 
     def show_remove_message(self):
         Sounds.띵()
@@ -109,8 +114,8 @@ class RecordDetailGUI:
         self.comment_scrollbar.pack(side="right", fill="y")
         self.comment_frame.place(x=210, y=200, anchor="n")
 
-        self.edit_button.place(x=10, y=400)
-        self.remove_button.place(x=80, y=400)
+        self.edit_button.place(x=15, y=445, anchor="sw")
+        self.remove_button.place(x=80, y=445, anchor="sw")
         self.back_button.place(x=410, y=430, anchor="e")
 
     def open(self, book):
@@ -135,6 +140,23 @@ class RecordDetailGUI:
         self.comment_text.configure(state="disable")
 
         self.frame.place(x=self.position[0], y=self.position[1], anchor="n")
+
+    def change_edit_mode(self):
+        self.edit_button.place_forget()
+        self.save_button.place(x=15, y=445, anchor="sw")
+        self.comment_text.configure(state="normal", bg="ivory2", cursor="xterm")
+
+    def save(self):
+        self.save_button.place_forget()
+        self.edit_button.place(x=15, y=445, anchor="sw")
+        self.comment_text.configure(state="disable", bg="white", cursor="arrow")
+
+        self.book.user_comment = self.comment_text.get(TEXT_START, TEXT_END)
+        self.record_gui.book_manager.update_books()
+
+    def close(self):
+        self.save()
+        self.frame.place_forget()
 
     def set_record_gui(self, gui):
         self.record_gui = gui
