@@ -19,12 +19,11 @@ class RecordBookGUI:
     plus_button = None
     minus_button = None
     statistic_button = None
-    bestseller_button=None
+    bestseller_button = None
 
     record_listbox = None
     record_scrollbar = None
 
-    # detail
     detail_gui = None
 
     statistic_gui = None
@@ -47,7 +46,7 @@ class RecordBookGUI:
 
         self.email_button = Button(frame, text="이메일 전송", width=12, height=1, font=self.TempFont,
                                   command=self.sendEmail,bg='tan')
-        self.email_entry=Entry(frame, relief="solid", font=self.TempFont, width=17)
+        self.email_entry = Entry(frame, relief="solid", font=self.TempFont, width=17)
         self.statistic_button = Button(frame, text="주간 통계보기", width=14, height=1, font=self.TempFont, bg='plum3')
         self.bestseller_button = Button(frame, text="오늘의 베스트셀러", width=14, height=1, font=self.TempFont, bg='pink')
 
@@ -58,6 +57,7 @@ class RecordBookGUI:
         self.record_listbox.bind("<Double-Button-1>", self.show_detail)
 
         self.detail_gui = RecordDetailGUI(frame, 250, 10)
+        self.detail_gui.set_record_gui(self)
 
     def place_widget(self):
         self.record_frame.place(x=250, y=130, anchor="n")

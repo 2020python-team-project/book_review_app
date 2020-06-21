@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import font
+from tkinter import messagebox
 from urlImage import UrlImage
 import rating_image
 from Cmodule.dateString import *
@@ -32,8 +33,15 @@ class RecordDetailGUI:
     comment_text = None
     comment_scrollbar = None
 
+    edit_image = None
+    remove_image = None
+    edit_button = None
+    remove_button = None
     back_button = None
 
+    remove_message_box = None
+
+    record_gui = None
     book = None
 
     def __init__(self, frame, x, y):
@@ -62,14 +70,25 @@ class RecordDetailGUI:
         self.rating_label = Label(self.frame, bg="white")
 
         self.comment_frame = Frame(self.frame)
-        self.comment_text = Text(self.comment_frame, font=self.text_font, width=34, height=10, relief="solid",
+        self.comment_text = Text(self.comment_frame, font=self.text_font, width=34, height=8, relief="solid",
                                  cursor="arrow")
         self.comment_scrollbar = Scrollbar(self.comment_frame)
         self.comment_text["yscrollcommand"] = self.comment_scrollbar.set
         self.comment_scrollbar["command"] = self.comment_text.yview
 
+
+        self.edit_image = PhotoImage(file="Resource/Image/edit.png")
+        self.edit_button = Button(self.frame, image=self.edit_image)
+        self.remove_image = PhotoImage(file="Resource/Image/remove.png")
+        self.remove_button = Button(self.frame, image=self.remove_image, command=self.show_remove_message)
         self.back_button = Button(self.frame, text="닫기", font=self.default_font,
                                   command=self.frame.place_forget)
+
+    def show_remove_message(self):
+        ok = messagebox.askokcancel("삭제", "삭제한 데이터는 복구할 수 없습니다.\n진짜로 삭제하시겠습니까?")
+        if ok:
+            self.record_gui.book_manager.remove_book(self.book)
+            self.frame.place_forget()
 
     def place_widget(self):
         self.image_label.place(x=10, y=15)
@@ -87,9 +106,12 @@ class RecordDetailGUI:
         self.comment_scrollbar.pack(side="right", fill="y")
         self.comment_frame.place(x=210, y=200, anchor="n")
 
+        self.edit_button.place(x=10, y=400)
+        self.remove_button.place(x=80, y=400)
         self.back_button.place(x=410, y=430, anchor="e")
 
     def open(self, book):
+        self.book = book
         self.book_image = UrlImage(book.image).get_image()
         self.image_label.configure(image=self.book_image)
 
@@ -110,4 +132,7 @@ class RecordDetailGUI:
         self.comment_text.configure(state="disable")
 
         self.frame.place(x=self.position[0], y=self.position[1], anchor="n")
+
+    def set_record_gui(self, gui):
+        self.record_gui = gui
 

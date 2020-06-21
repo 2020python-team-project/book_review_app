@@ -23,6 +23,18 @@ class BookManager:
         with open(self.file_name, "ab") as f:
             pickle.dump(book, f)
 
+    def remove_book(self, book):
+        self.books.remove(book)
+        self.save_books()
+
+        self.ui.update_record_list()
+
+    def save_books(self):
+        # books에 있는 내용을 처음부터 다시 씀
+        with open(self.file_name, "wb") as f:
+            for book in self.books:
+                pickle.dump(book, f)
+
     def load_from_file(self):
         try:
             f = open(self.file_name, "rb")
