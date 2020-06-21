@@ -4,6 +4,7 @@ from tkinter import messagebox
 from urlImage import UrlImage
 import rating_image
 from Cmodule.dateString import *
+import Sounds
 
 TEXT_START = 1.0
 TEXT_END = END
@@ -85,10 +86,12 @@ class RecordDetailGUI:
                                   command=self.frame.place_forget)
 
     def show_remove_message(self):
+        Sounds.띵()
         ok = messagebox.askokcancel("삭제", "삭제한 데이터는 복구할 수 없습니다.\n진짜로 삭제하시겠습니까?")
         if ok:
             self.record_gui.book_manager.remove_book(self.book)
             self.frame.place_forget()
+            Sounds.댐()
 
     def place_widget(self):
         self.image_label.place(x=10, y=15)

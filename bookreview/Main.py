@@ -8,7 +8,7 @@ from statisticsGUI import StatisticsGUI
 from BestsellerGUI import BestsellerGUI
 import rating_image
 from bookManager import BookManager
-
+import Sounds
 
 class MainGUI:
     window = None
@@ -163,6 +163,8 @@ class MainGUI:
 
 def change_frame(frame):
     frame.tkraise()
+    Sounds.댐()
+
 
 
 

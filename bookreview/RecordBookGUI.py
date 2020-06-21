@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 import urllib.request
 from xml.dom.minidom import getDOMImplementation
 from datetime import date, datetime, timedelta
+import Sounds
 
 
 class RecordBookGUI:
@@ -82,6 +83,7 @@ class RecordBookGUI:
         selected_book = self.book_manager.books[selected_index[0]]
 
         self.detail_gui.open(selected_book)
+        Sounds.뿅()
 
     def set_statistics_gui(self, gui):
         self.statistic_gui = gui
@@ -95,7 +97,6 @@ class RecordBookGUI:
         host = "smtp.gmail.com"  # Gmail STMP 서버 주소.
         port = "587"
         htmlFile=self.MakeHtmlDoc() #예쁘게 보내주려고 html 파일로 변환
-        print(htmlFile)
         senderAddr = "ghdtmdgp12@gmail.com"  # 보내는 사람 email 주소.
         recipientAddr = urllib.parse.quote(self.email_entry.get()).replace("%40","@")    # 받는 사람 email 주소.
 
@@ -118,6 +119,7 @@ class RecordBookGUI:
         s.login("ghdtmdgp12@gmail.com", "ghd5683734")
         s.sendmail(senderAddr, [recipientAddr], msg.as_string())
         s.close()
+        Sounds.따라란()
 
     def MakeHtmlDoc(self):
         # DOM 개체를 생성
@@ -149,9 +151,9 @@ class RecordBookGUI:
 
             #이미지가 안띄워짐 ㅠㅠ
             # image = newdoc.createTextNode(bookitem.image)  # 텍스트 노드 생성
-            # img = newdoc.createElement('img src='+str(image))  # title 부분을 생성
+            # img = newdoc.createElement(img src=str(image))  # title 부분을 생성
 
-            #body.appendChild(img)
+            # body.appendChild(img)
             body.appendChild(b)
             body.appendChild(a)
             body.appendChild(p)

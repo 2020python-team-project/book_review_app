@@ -4,7 +4,7 @@ from tkinter import font
 from Bestseller_Search_engine import  BestsellerSearchEngine
 from urlImage import UrlImage
 from datetime import date, datetime, timedelta
-
+import Sounds
 
 TEXT_START = 1.0
 TEXT_END = END
@@ -46,6 +46,7 @@ class BestsellerGUI:
     def show_window(self):
         self.frame.place(x=0, y=0)
         self.frame.tkraise()
+        Sounds.띠리리링()
 
 
 class BSbooks:
@@ -57,6 +58,7 @@ class BSbooks:
     result_scrollbar = None
 
     category=100
+    v=0
 
 
     def __init__(self, frame, x, y):
@@ -133,8 +135,10 @@ class BSbooks:
         self.result_listbox.delete(0, self.result_listbox.size())
         if self.v.get()==2: #해외 선택시
             self.BS_engine.category=200
-        else:
+            Sounds.뿅()
+        elif self.v.get()==1:
             self.BS_engine.category=100
+            Sounds.뽁()
 
         self.BS_engine.set_search()
 
@@ -142,7 +146,6 @@ class BSbooks:
             self.result_listbox.insert(i, str(i+1)+"위: "+book["title"])
 
         self.detail_frame.place_forget()  # detail창이 띄워진 상태일 수도 있으니 닫는다.
-
 
     def show_detail(self,event):
         selected_index = self.result_listbox.curselection()
@@ -167,3 +170,4 @@ class BSbooks:
 
         self.detail_frame.place(x=730, y=150, anchor="n")
         self.detail_frame.tkraise()
+        Sounds.뽁()

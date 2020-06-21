@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import font
 from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
+import Sounds
 
 TEXT_START = 1.0
 TEXT_END = END
@@ -143,6 +144,7 @@ class BookSearchGUI:
         self.add_book_in_list()
 
         self.detail_frame.place_forget()
+        Sounds.샤라락()
 
     def add_book_in_list(self):
         self.result_listbox.delete(0, self.result_listbox.size())
@@ -172,6 +174,7 @@ class BookSearchGUI:
 
         self.detail_frame.place(x=250, y=130, anchor="n")
         self.detail_frame.tkraise()
+        Sounds.뽁()
 
     def set_edit_gui(self, gui):
         self.edit_gui = gui
@@ -180,3 +183,4 @@ class BookSearchGUI:
         if self.edit_gui is not None:
             self.edit_gui.start_edit(self.selected_book, self.url_image.get_image())
         self.detail_frame.place_forget()
+        Sounds.뿅()

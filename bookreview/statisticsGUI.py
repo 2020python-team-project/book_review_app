@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font
 from urlImage import UrlImage
 from Cmodule.dateString import *
+import Sounds
 
 class StatisticsGUI:
     root = None
@@ -29,7 +30,6 @@ class StatisticsGUI:
 
     def set_widget(self):
         self.frame.configure(bg="beige", bd=3, relief="ridge")
-
         self.graph = Graph(self.frame, x=500, y=100, book_manager=self.book_manager)
         self.title_label = Label(self.frame, font=self.title_font, text="통계", bg="beige")
         self.close_button = Button(self.frame, font=self.button_font, text="닫기", command=self.close)
@@ -45,12 +45,13 @@ class StatisticsGUI:
     def show_window(self):
         self.frame.place(x=0, y=0)
         self.frame.tkraise()
-
+        Sounds.샤라락()
         self.graph.build_graph()
 
     def close(self):
         self.graph.clear()
         self.frame.place_forget()
+        Sounds.뿅()
 
 
 class Period:
@@ -169,7 +170,7 @@ class Graph:
                 self.id_to_book[item] = books[i]
                 self.canvas.after(300)
                 self.canvas.update()
-                # 여기 효과음 넣으면 괜찮을 듯
+                Sounds.뽁()
 
         for book_id in self.id_to_book.keys():
             self.canvas.tag_bind(book_id, "<Enter>", lambda event, b_id=book_id: self.show_info(b_id))

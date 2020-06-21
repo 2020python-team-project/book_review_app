@@ -4,6 +4,7 @@ from Library_search_engin import LibrarySearchEngine
 import folium
 import webbrowser
 from urlImage import UrlImage
+import Sounds
 
 class LibrarySearchGUI:
     setting_frame = None
@@ -116,6 +117,7 @@ class LibrarySearchGUI:
             self.result_listbox.insert(i, lib.LIBRRY_NM)
 
         self.detail_frame.place_forget()    # detail창이 띄워진 상태일 수도 있으니 닫는다.
+        Sounds.샤라락()
 
 
     def show_detail(self,event):
@@ -134,6 +136,8 @@ class LibrarySearchGUI:
         self.detail_frame.place(x=250, y=130, anchor="n")
         self.detail_frame.tkraise()
 
+        Sounds.뿅()
+
     def show_map(self):
         #self.map_frame.place(x=250, y=130, anchor="n")
         #self.map_frame.tkraise()
@@ -149,3 +153,4 @@ class LibrarySearchGUI:
         htmlFile='osm.html'
         map_osm.save(htmlFile)
         webbrowser.open_new(htmlFile)
+        Sounds.띠리리링()

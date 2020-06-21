@@ -5,6 +5,7 @@ import time
 from urlImage import *
 from book import Book
 import rating_image
+import Sounds
 
 TEXT_START = 1.0
 TEXT_END = END
@@ -141,6 +142,7 @@ class EditGUI:
         )
         self.book_manager.add_book(book)
         self.close()
+        Sounds.띠딩()
 
     def debug(self):
         # self.frame.place(x=self.position[0], y=self.position[1], anchor="n")
