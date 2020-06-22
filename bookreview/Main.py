@@ -83,6 +83,11 @@ class MainGUI:
         # 아이콘 모양 변경할 수 있음
         # self.window.iconbitmap(default="파일이름")
         self.window.option_add("*TCombobox*Listbox.font", self.button_font)    # 콤보박스에 폰트넣기
+        self.window.option_add("*TCombobox*Listbox.font", self.TempFont) #콤보박스에 폰트넣기
+
+    def set_font(self):
+        self.title_font = font.Font(size=24, weight="bold", family="메이플스토리")
+        self.TempFont = font.Font(size=14, weight='bold', family='메이플스토리')
 
     def build_main_frame(self):
         # Create
