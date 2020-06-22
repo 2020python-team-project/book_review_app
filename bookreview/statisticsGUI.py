@@ -29,12 +29,17 @@ class StatisticsGUI:
         self.place_widget()
 
     def set_widget(self):
-        self.frame.configure(bg="beige", bd=3, relief="ridge")
+        self.frame.configure(bg="plum", bd=3, relief="ridge")
+        self.backG = PhotoImage(file="Resource/Image/background.png")
+        self.image_label = Label(self.frame, image=self.backG, bg="plum")
         self.graph = Graph(self.frame, x=500, y=100, book_manager=self.book_manager)
-        self.title_label = Label(self.frame, font=self.title_font, text="통계", bg="beige")
+
+
+        self.title_label = Label(self.frame, font=self.title_font, text="통계", bg="plum3")
         self.close_button = Button(self.frame, font=self.button_font, text="닫기", command=self.close)
 
     def place_widget(self):
+        self.image_label.place(x=505, y=-5, anchor="n")
         self.title_label.place(x=500, y=30, anchor="n")
         self.close_button.place(x=900, y=30)
 
