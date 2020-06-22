@@ -185,6 +185,7 @@ class BookSearchGUI:
 
     def open_web(self):
         webbrowser.open(self.selected_book["link"])
+        Sounds.보석()
 
     def set_edit_gui(self, gui):
         self.edit_gui = gui

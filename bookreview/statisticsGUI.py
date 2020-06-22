@@ -32,14 +32,14 @@ class StatisticsGUI:
     def set_widget(self):
         self.frame.configure(bg="plum", bd=3, relief="ridge")
         self.backG = PhotoImage(file="Resource/Image/background.png")
-        self.image_label = Label(self.frame, image=self.backG, bg="plum")
+        self.backGimage_label = Label(self.frame, image=self.backG, bg="plum")
         self.graph = Graph(self.frame, x=500, y=100, book_manager=self.book_manager)
 
         self.title_label = Label(self.frame, font=self.title_font, text="통계", bg="plum3")
         self.close_button = Button(self.frame, font=self.button_font, text="닫기", command=self.close)
 
     def place_widget(self):
-        self.image_label.place(x=505, y=-5, anchor="n")
+        self.backGimage_label.place(x=505, y=-5, anchor="n")
         self.title_label.place(x=500, y=30, anchor="n")
         self.close_button.place(x=900, y=30)
 
@@ -115,6 +115,10 @@ class Graph:
         self.image = PhotoImage(file="Resource/Image/book_stock.PNG")
 
         self.book_manager = book_manager
+
+        self.bearimage = PhotoImage(file="Resource/Image/bear2.png")
+        self.bearimage_label = Label(self.canvas, image=self.bearimage,bg="white")
+        self.bearimage_label.place(x=650,y=5)
 
         self.period = Period("2020", "상반기")
         self.create_period_object(self.period)

@@ -152,6 +152,7 @@ class RecordDetailGUI:
         self.edit_button.place_forget()
         self.save_button.place(x=15, y=445, anchor="sw")
         self.comment_text.configure(state="normal", bg="ivory2", cursor="xterm")
+        Sounds.뽁()
 
     def save(self):
         self.save_button.place_forget()
@@ -160,6 +161,7 @@ class RecordDetailGUI:
 
         self.book.user_comment = self.comment_text.get(TEXT_START, TEXT_END)
         self.record_gui.book_manager.update_books()
+        Sounds.뽁()
 
     def close(self):
         self.save()
@@ -167,6 +169,7 @@ class RecordDetailGUI:
 
     def open_web(self):
         webbrowser.open(self.url)
+        Sounds.보석()
 
     def set_record_gui(self, gui):
         self.record_gui = gui
