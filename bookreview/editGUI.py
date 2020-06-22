@@ -158,12 +158,15 @@ class EditGUI:
         if x < 39:
             self.rating = 1
             self.rating_label.configure(image=rating_image.bad)
+            Sounds.뽁()
         elif 55 < x < 94:
             self.rating = 2
             self.rating_label.configure(image=rating_image.normal)
+            Sounds.뽁()
         elif 110 < x < 334:
             self.rating = 3
             self.rating_label.configure(image=rating_image.good)
+            Sounds.뽁()
 
     def link(self, book_manager):
         self.book_manager = book_manager
