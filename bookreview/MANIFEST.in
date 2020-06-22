@@ -1,0 +1,3 @@
+include Resource/bgm/*
+include Resource/Image/*
+include Cmodule/dateString.pyd
