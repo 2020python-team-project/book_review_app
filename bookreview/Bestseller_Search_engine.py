@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
-import http.client
 from urllib import parse
 from xml.dom.minidom import *
 import urllib.request
-
 
 
 class BestsellerSearchEngine:

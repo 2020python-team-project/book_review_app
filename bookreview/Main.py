@@ -10,10 +10,13 @@ import rating_image
 from bookManager import BookManager
 import Sounds
 
+
 class MainGUI:
     window = None
     button_font = None
     title_font = None
+
+    start_scene = None
 
     # Main Frame
     hud_frame = None
@@ -51,6 +54,8 @@ class MainGUI:
     def __init__(self):
         self.window = Tk()
 
+        self.start_scene = StartScene(self.window)
+
         self.set_font()
         rating_image.load_image()
 
@@ -68,8 +73,10 @@ class MainGUI:
 
         self.link_gui()
 
-
         change_frame(self.book_frame)
+        change_frame(self.start_scene.frame)
+
+        self.update()
 
     def set_font(self):
         self.title_font = font.Font(size=24, weight="bold", family="메이플스토리")
@@ -80,10 +87,8 @@ class MainGUI:
         self.window.geometry("1000x600+200+100")
         self.window.resizable(False, False)     # 확대창 없애기
         self.window.configure(bg="beige")
-        # 아이콘 모양 변경할 수 있음
-        # self.window.iconbitmap(default="파일이름")
+        self.window.iconbitmap(default="Resource/Image/icon.ico")
         self.window.option_add("*TCombobox*Listbox.font", self.button_font)    # 콤보박스에 폰트넣기
-
 
     def build_main_frame(self):
         # Create
@@ -99,13 +104,6 @@ class MainGUI:
         self.book_frame.grid(row=1, column=0)
         self.library_frame.grid(row=1, column=0)
         self.bookcase_frame.grid(row=1, column=1)
-
-        # debug 용
-        # self.hud_frame.configure(bd=1, relief="solid")
-        # self.image_frame.configure(bd=1, relief="solid")
-        # self.book_frame.configure(bd=1, relief="solid")
-        #self.library_frame.configure(bd=1, relief="solid")
-        # self.bookcase_frame.configure(bd=1, relief="solid")
 
     def build_image(self):
         self.book_image = PhotoImage(file="Resource/Image/Book.png")
@@ -157,9 +155,17 @@ class MainGUI:
         self.record_book_gui.set_bestseller_gui(self.Bestseller_gui)
         self.book_manager.set_record_ui(self.record_book_gui)
 
+    def update(self):
+        self.window.after(13)
+        self.start_scene.animate()
+        if self.start_scene.scene_time < 0:
+            self.start_scene.close()
+            del self.start_scene
+            return
+        self.update()
+
     def run(self):
         self.window.mainloop()
-
 
 
 def change_frame(frame):
@@ -167,6 +173,34 @@ def change_frame(frame):
     Sounds.댐()
 
 
+import math
+class StartScene:
+    def __init__(self, root):
+        self.frame = Frame(root, width=1000, height=600)
+        self.image = PhotoImage(file="Resource/Image/start_scene.png")
+        self.canvas = Canvas(self.frame, width=1000, height=600, bg="beige")
+        self.img_id = self.canvas.create_image(300, 300, image=self.image)
+
+        self.title_font = font.Font(size=45, weight="bold", family="메이플스토리")
+        self.name_font = font.Font(size=13, weight='bold', family='메이플스토리')
+        self.canvas.create_text(700, 250, font=self.title_font, text="나만의\n독서기록장")
+        self.canvas.create_text(800, 500, font=self.name_font, text="by. 홍승혜 윤혜림 KPU 게임공학과")
+
+        self.scene_time = 2000
+        self.var = 0
+
+        self.canvas.place(x=0, y=0)
+        self.frame.place(x=0, y=0)
+
+    def close(self):
+        self.canvas.destroy()
+        self.frame.destroy()
+
+    def animate(self):
+        self.scene_time -= 13
+        self.var += 0.1
+        self.canvas.move(self.img_id, 0, math.cos(self.var)*2)
+        self.canvas.update()
 
 
 main = MainGUI()

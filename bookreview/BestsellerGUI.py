@@ -1,24 +1,24 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter import font
-from Bestseller_Search_engine import  BestsellerSearchEngine
+from Bestseller_Search_engine import BestsellerSearchEngine
 from urlImage import UrlImage
-from datetime import date, datetime, timedelta
+from datetime import date
 import Sounds
 
 TEXT_START = 1.0
 TEXT_END = END
 
+
 class BestsellerGUI:
     root = None
-    window = None
 
     title_font = None
+    button_font = None
 
     title_label = None
     close_button = None
 
-    bsbooks=None
+    bsbooks = None
 
     def __init__(self, frame):
         self.root = frame
@@ -34,7 +34,7 @@ class BestsellerGUI:
 
         self.bsbooks = BSbooks(self.frame, x=500, y=100)
         self.title_label = Label(self.frame, font=self.title_font, text="★ "+str(date.today()) + " 오늘의 BEST SELLER ★", bg="beige")
-        self.close_button = Button(self.frame, text="close", command=self.frame.place_forget)
+        self.close_button = Button(self.frame, font=self.button_font, text="닫기", command=self.frame.place_forget)
 
     def place_widget(self):
         self.title_label.place(x=500, y=30, anchor="n")
@@ -42,6 +42,7 @@ class BestsellerGUI:
 
     def set_font(self):
         self.title_font = font.Font(family="메이플스토리", weight="bold", size=25)
+        self.button_font = font.Font(family="메이플스토리", weight="bold", size=15)
 
     def show_window(self):
         self.frame.place(x=0, y=0)
@@ -51,7 +52,7 @@ class BestsellerGUI:
 
 class BSbooks:
 
-    BS_engine=None
+    BS_engine = None
 
     # result frame
     result_listbox = None
@@ -59,7 +60,6 @@ class BSbooks:
 
     category=100
     v=0
-
 
     def __init__(self, frame, x, y):
         self.TempFont = font.Font(size=14, weight='bold', family='메이플스토리')
@@ -80,9 +80,9 @@ class BSbooks:
 
         #setting
         self.v=IntVar()
-        Radiobutton(self.setting_frame,text="국내",variable=self.v, value=1,
+        Radiobutton(self.setting_frame,text="국내",variable=self.v, value=1, activebackground="beige",
                     command=self.search_books,font=self.big_font,bg="beige").pack(side=LEFT)
-        Radiobutton(self.setting_frame, text="국외", variable=self.v,value=2,
+        Radiobutton(self.setting_frame, text="국외", variable=self.v,value=2, activebackground="beige",
                     command=self.search_books,font=self.big_font,bg="beige").pack(side=LEFT)
 
         #image

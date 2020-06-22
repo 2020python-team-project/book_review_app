@@ -4,6 +4,7 @@ from urlImage import UrlImage
 from Cmodule.dateString import *
 import Sounds
 
+
 class StatisticsGUI:
     root = None
     window = None
@@ -33,7 +34,6 @@ class StatisticsGUI:
         self.backG = PhotoImage(file="Resource/Image/background.png")
         self.image_label = Label(self.frame, image=self.backG, bg="plum")
         self.graph = Graph(self.frame, x=500, y=100, book_manager=self.book_manager)
-
 
         self.title_label = Label(self.frame, font=self.title_font, text="통계", bg="plum3")
         self.close_button = Button(self.frame, font=self.button_font, text="닫기", command=self.close)
@@ -173,7 +173,6 @@ class Graph:
                 item = self.canvas.create_image(self.graph_xpos[month], 340 - i * 70, image=self.image,
                                                 tag="book_stock")
                 self.id_to_book[item] = books[i]
-                # self.canvas.after(100)
                 self.canvas.update()
                 Sounds.뽁()
 
