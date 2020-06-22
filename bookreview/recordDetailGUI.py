@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import font
 from tkinter import messagebox
+import webbrowser
 from urlImage import UrlImage
 import rating_image
 from Cmodule.dateString import *
@@ -42,14 +43,16 @@ class RecordDetailGUI:
     save_button = None
     remove_button = None
     back_button = None
+    web_button = None
 
     remove_message_box = None
 
     record_gui = None
     book = None
+    url = ""
 
     def __init__(self, frame, x, y):
-        self.frame = Frame(frame, width=420, height=460, bd=1, relief="solid", bg="white")
+        self.frame = Frame(frame, width=420, height=460, bd=2, relief="solid", bg="white")
         self.position = (x, y)
         self.set_font()
 
@@ -89,6 +92,7 @@ class RecordDetailGUI:
         self.remove_button = Button(self.frame, image=self.remove_image, command=self.show_remove_message)
         self.back_button = Button(self.frame, text="닫기", font=self.default_font,
                                   command=self.close)
+        self.web_button = Button(self.frame, font=self.default_font, text="웹에서 보기", command=self.open_web)
 
     def show_remove_message(self):
         Sounds.띵()
@@ -117,6 +121,7 @@ class RecordDetailGUI:
         self.edit_button.place(x=15, y=445, anchor="sw")
         self.remove_button.place(x=80, y=445, anchor="sw")
         self.back_button.place(x=410, y=430, anchor="e")
+        self.web_button.place(x=350, y=430, anchor="e")
 
     def open(self, book):
         self.book = book
@@ -126,7 +131,7 @@ class RecordDetailGUI:
         self.title_label.configure(text=book.title)
         self.author_label.configure(text=book.author)
         self.publisher_label.configure(text=book.publisher)
-        self.pubdate_label.configure(text=f"출판일: {book.pubdate}")
+        self.pubdate_label.configure(text=f"출판일: {get_dot_format(book.pubdate)}")
         self.price_label.configure(text=f"가격: {book.price}")
 
         self.rating_label.configure(image=rating_image.get_rating_image(book.rating))
@@ -138,6 +143,8 @@ class RecordDetailGUI:
         self.comment_text.delete(TEXT_START, TEXT_END)
         self.comment_text.insert(TEXT_START, book.user_comment)
         self.comment_text.configure(state="disable")
+
+        self.url = book.link
 
         self.frame.place(x=self.position[0], y=self.position[1], anchor="n")
 
@@ -157,6 +164,9 @@ class RecordDetailGUI:
     def close(self):
         self.save()
         self.frame.place_forget()
+
+    def open_web(self):
+        webbrowser.open(self.url)
 
     def set_record_gui(self, gui):
         self.record_gui = gui

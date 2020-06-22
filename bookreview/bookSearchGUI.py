@@ -4,6 +4,7 @@ from tkinter import font
 from urlImage import UrlImage
 from book_search_engine import BookSearchEngine
 from Cmodule.dateString import *
+import webbrowser
 import Sounds
 
 TEXT_START = 1.0
@@ -38,6 +39,7 @@ class BookSearchGUI:
     link_label = None
     back_to_list_button = None
     save_button = None
+    web_button = None
 
     heads = ["제목", "저자", "출판사"]
     categories = ["전체", "소설", "시/에세이", "인문", "자기계발", "역사/문화", "해외도서"]
@@ -67,7 +69,7 @@ class BookSearchGUI:
 
     def create_widget(self, frame):
         self.setting_frame = Frame(frame, bg="white", width=420, height=100)
-        self.detail_frame = Frame(frame, bg="white", width=420, height=335)
+        self.detail_frame = Frame(frame, bg="white", width=420, height=335, bd=2, relief="solid")
         self.result_frame = Frame(frame, bg="white")
 
         self.keyword_entry = Entry(self.setting_frame, relief="solid", font=self.default_font, width=17)
@@ -107,6 +109,8 @@ class BookSearchGUI:
                                           command=self.detail_frame.place_forget)
         self.save_button = Button(self. detail_frame, font=self.default_font, text="저장하기",
                                   command=self.open_edit_frame)
+        self.web_button = Button(self. detail_frame, font=self.default_font, text="웹에서 보기",
+                                 command=self.open_web)
 
     def place_widget(self):
         # Place Widget
@@ -129,10 +133,10 @@ class BookSearchGUI:
         self.pubdate_label.place(x=110, y=90)
         self.price_label.place(x=110, y=110)
         self.description_text.place(x=210, y=150, anchor="n")
-        # self.link_label.place(x=10, y=250) 버튼을 만들어서 웹이랑 연결하자
 
         self.back_to_list_button.place(x=10, y=300, anchor="w")
         self.save_button.place(x=320, y=300, anchor="w")
+        self.web_button.place(x=100, y=300, anchor="w")
 
     def search_books(self, event=None):
         # 스크롤을 아래로 계속 내리면 검색 결과를 더 불러오는 기능 구현해야 함..
@@ -178,6 +182,9 @@ class BookSearchGUI:
         self.detail_frame.place(x=250, y=130, anchor="n")
         self.detail_frame.tkraise()
         Sounds.뽁()
+
+    def open_web(self):
+        webbrowser.open(self.selected_book["link"])
 
     def set_edit_gui(self, gui):
         self.edit_gui = gui

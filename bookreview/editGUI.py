@@ -46,10 +46,7 @@ class EditGUI:
         self.default_font = font.Font(size=11, weight='bold', family='메이플스토리')
         self.title_font = font.Font(size=13, weight='bold', family='메이플스토리')
 
-        self.frame = Frame(frame, bg="white", width=420, height=460)
-
-        # for debug
-        self.frame.configure(bd=3, relief="solid")
+        self.frame = Frame(frame, bg="white", width=420, height=460, bd=2, relief="solid")
 
         self.create_widget()
         self.set_widget()
@@ -80,8 +77,8 @@ class EditGUI:
         self.author_label.configure(bg="white", font=self.default_font)
         self.publisher_label.configure(bg="white", font=self.default_font)
 
-        self.save_button.configure(text="저장", font=self.default_font, command=self.save)
-        self.close_button.configure(text="닫기", font=self.default_font, command=self.close)
+        self.save_button.configure(text="저장", font=self.title_font, command=self.save)
+        self.close_button.configure(text="닫기", font=self.title_font, command=self.close)
 
         self.date_gui.set()
         self.rating_label.configure(bg="white")
