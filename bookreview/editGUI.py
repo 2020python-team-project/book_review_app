@@ -44,6 +44,7 @@ class EditGUI:
     def __init__(self, frame, x, y):
         self.position = (x, y)
         self.default_font = font.Font(size=11, weight='bold', family='메이플스토리')
+        self.title_font = font.Font(size=13, weight='bold', family='메이플스토리')
 
         self.frame = Frame(frame, bg="white", width=420, height=460)
 
@@ -74,7 +75,8 @@ class EditGUI:
 
     def set_widget(self):
         self.image_label.configure(bg="white", bd=1, relief="solid")
-        self.title_label.configure(bg="white", font=self.default_font)
+        self.title_label.configure(bg="white", font=self.title_font, anchor="w",
+                                   justify="left", wraplength=270)
         self.author_label.configure(bg="white", font=self.default_font)
         self.publisher_label.configure(bg="white", font=self.default_font)
 
@@ -92,10 +94,10 @@ class EditGUI:
         self.comment_edit_scrollbar["command"] = self.comment_edit_text.yview
 
     def place_widget(self):
-        self.image_label.place(x=25, y=70)
-        self.title_label.place(x=120, y=80)
-        self.author_label.place(x=120, y=105)
-        self.publisher_label.place(x=120, y=130)
+        self.image_label.place(x=25, y=60)
+        self.title_label.place(x=120, y=60)
+        self.author_label.place(x=120, y=130)
+        self.publisher_label.place(x=120, y=150)
 
         self.save_button.place(x=300, y=20)
         self.close_button.place(x=350, y=20)
